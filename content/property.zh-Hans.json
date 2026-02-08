@@ -1,18 +1,1 @@
-{
-  "property": {
-    "name": "素里家庭旅馆",
-    "location": {
-      "city": "素里",
-      "region": "温哥华 BC",
-      "country": "加拿大"
-    },
-    "typeOfAccommodation": "家庭旅馆",
-    "description": "位于加拿大 BC 省温哥华素里的温馨家庭旅馆。",
-    "amenities": ["Wi-Fi", "停车", "厨房", "适合家庭"],
-    "photos": ["/images/photo1.jpg"],
-    "policies": {
-      "checkInOut": "下午3点后入住，上午11点前退房。",
-      "cancellation": "入住前24小时可免费取消。"
-    }
-  }
-}
+{"property":{"name":"素里家庭旅馆","location":{"city":"素里","region":"温哥华 BC","country":"加拿大","addressLine":"16727 108 Avenue, Surrey BC V4N 1N5"},"typeOfAccommodation":"家庭旅馆","description":"位于加拿大 BC 省温哥华素里的温馨家庭旅馆。","amenities":["Wi-Fi","停车","厨房","适合家庭"],"photos":["/images/image_001.jpg"],"policies":{"checkInOut":"下午3点后入住，上午11点前退房。","cancellation":"入住前24小时可免费取消。"}}}

@@ -1,18 +1,1 @@
-{
-  "property": {
-    "name": "Hôtel familial Surrey",
-    "location": {
-      "city": "Surrey",
-      "region": "Vancouver BC",
-      "country": "Canada"
-    },
-    "typeOfAccommodation": "Hôtel familial",
-    "description": "Un hôtel familial accueillant à Surrey, Vancouver BC, Canada.",
-    "amenities": ["Wi-Fi", "Stationnement", "Cuisine", "Adapté aux familles"],
-    "photos": ["/images/photo1.jpg"],
-    "policies": {
-      "checkInOut": "Arrivée après 15 h, départ avant 11 h.",
-      "cancellation": "Annulation gratuite jusqu'à 24 h avant l'arrivée."
-    }
-  }
-}
+{"property":{"name":"Hôtel familial Surrey","location":{"city":"Surrey","region":"Vancouver BC","country":"Canada","addressLine":"16727 108 Avenue, Surrey BC V4N 1N5"},"typeOfAccommodation":"Hôtel familial","description":"Un hôtel familial accueillant à Surrey, Vancouver BC, Canada.","amenities":["Wi-Fi","Stationnement","Cuisine","Adapté aux familles"],"photos":["/images/image_001.jpg"],"policies":{"checkInOut":"Arrivée après 15 h, départ avant 11 h.","cancellation":"Annulation gratuite jusqu'à 24 h avant l'arrivée."}}}

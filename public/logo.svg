@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" fill="none" aria-hidden="true">
+  <path d="M8 32V16l12-8 12 8v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M20 8v24M12 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <text x="44" y="26" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="currentColor">Family Hotel</text>
+</svg>

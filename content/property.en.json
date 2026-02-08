@@ -1,18 +1,1 @@
-{
-  "property": {
-    "name": "Family Hotel Surrey",
-    "location": {
-      "city": "Surrey",
-      "region": "Vancouver BC",
-      "country": "Canada"
-    },
-    "typeOfAccommodation": "Family hotel",
-    "description": "A welcoming family hotel in Surrey, Vancouver BC, Canada. Perfect for visitors exploring the Lower Mainland.",
-    "amenities": ["Wi-Fi", "Parking", "Kitchen", "Family-friendly"],
-    "photos": ["/images/photo1.jpg"],
-    "policies": {
-      "checkInOut": "Check-in after 3 PM, check-out by 11 AM.",
-      "cancellation": "Free cancellation up to 24 hours before check-in."
-    }
-  }
-}
+{"property":{"name":"Family Hotel Surrey","location":{"city":"Surrey","region":"Vancouver BC","country":"Canada","addressLine":"16727 108 Avenue, Surrey BC V4N 1N5"},"typeOfAccommodation":"Family hotel","description":"A welcoming family hotel in Surrey, Vancouver BC, Canada. Perfect for visitors exploring the Lower Mainland.","amenities":["Wi-Fi","Parking","Kitchen","Family-friendly"],"photos":["/images/image_001.jpg"],"policies":{"checkInOut":"Check-in after 3 PM, check-out by 11 AM.","cancellation":"Free cancellation up to 24 hours before check-in."}}}

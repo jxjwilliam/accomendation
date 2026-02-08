@@ -24,8 +24,9 @@ export function Header({ currentLocale }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
       <div className="container flex h-14 items-center justify-between px-4 sm:px-6">
-        <Link href={`/${currentLocale}`} className="font-semibold">
-          Family Hotel
+        <Link href={`/${currentLocale}`} className="flex items-center gap-2 font-semibold">
+          <img src="/logo.svg" alt="" className="h-8 w-auto" width={120} height={40} />
+          <span className="sr-only">Family Hotel</span>
         </Link>
         <nav className="flex items-center gap-4" aria-label="Main">
           <Link href={`/${currentLocale}/property`} className="text-sm underline-offset-4 hover:underline">
