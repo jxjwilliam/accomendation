@@ -1,0 +1,16 @@
+{
+  "channels": [
+    {
+      "type": "airbnb",
+      "label": "在 Airbnb 預訂",
+      "url": "https://www.airbnb.com/",
+      "openInNewTab": true
+    },
+    {
+      "type": "contact",
+      "label": "聯絡我們",
+      "url": "mailto:hello@example.com",
+      "openInNewTab": false
+    }
+  ]
+}

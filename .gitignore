@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build / output
+.next/
+out/
+dist/
+build/
+
+# Debug / logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Env
+.env
+.env*.local
+.env.production
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+
+# Testing / coverage
+coverage/
+.nyc_output/
+
+# Misc
+*.tsbuildinfo
+next-env.d.ts
+
+# Python (existing in repo)
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.Python

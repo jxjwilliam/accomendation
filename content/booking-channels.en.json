@@ -1,0 +1,16 @@
+{
+  "channels": [
+    {
+      "type": "airbnb",
+      "label": "Book on Airbnb",
+      "url": "https://www.airbnb.com/",
+      "openInNewTab": true
+    },
+    {
+      "type": "contact",
+      "label": "Contact us",
+      "url": "mailto:hello@example.com",
+      "openInNewTab": false
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "property": {
+    "name": "素里家庭旅館",
+    "location": {
+      "city": "素里",
+      "region": "溫哥華 BC",
+      "country": "加拿大"
+    },
+    "typeOfAccommodation": "家庭旅館",
+    "description": "位於加拿大 BC 省溫哥華素里的溫馨家庭旅館。",
+    "amenities": ["Wi-Fi", "停車", "廚房", "適合家庭"],
+    "photos": ["/images/photo1.jpg"],
+    "policies": {
+      "checkInOut": "下午3點後入住，上午11點前退房。",
+      "cancellation": "入住前24小時可免費取消。"
+    }
+  }
+}

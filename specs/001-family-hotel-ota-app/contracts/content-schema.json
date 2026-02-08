@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "content-schema",
+  "title": "Family Hotel Content",
+  "description": "Schema for file-based property and booking channel content. Used by the app to load and validate content per locale.",
+  "definitions": {
+    "location": {
+      "type": "object",
+      "required": ["city", "region", "country"],
+      "properties": {
+        "city": { "type": "string", "minLength": 1 },
+        "region": { "type": "string", "minLength": 1 },
+        "country": { "type": "string", "minLength": 1 },
+        "addressLine": { "type": "string" }
+      }
+    },
+    "policies": {
+      "type": "object",
+      "properties": {
+        "checkInOut": { "type": "string" },
+        "cancellation": { "type": "string" },
+        "externalUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "property": {
+      "type": "object",
+      "required": ["name", "location", "typeOfAccommodation", "description", "amenities", "photos"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "location": { "$ref": "#/definitions/location" },
+        "typeOfAccommodation": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "amenities": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "photos": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "policies": { "$ref": "#/definitions/policies" }
+      }
+    },
+    "bookingChannel": {
+      "type": "object",
+      "required": ["type", "label", "url"],
+      "properties": {
+        "type": { "enum": ["airbnb", "booking.com", "vrbo", "contact"] },
+        "label": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "minLength": 1 },
+        "openInNewTab": { "type": "boolean", "default": true }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "title": "Property content (per locale)",
+      "type": "object",
+      "required": ["property"],
+      "properties": {
+        "property": { "$ref": "#/definitions/property" }
+      }
+    },
+    {
+      "title": "Booking channels (per locale)",
+      "type": "object",
+      "required": ["channels"],
+      "properties": {
+        "channels": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/bookingChannel" },
+          "minItems": 1
+        }
+      }
+    }
+  ]
+}
