@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UnavailableDates",
+  "description": "Optional static list of reserved/unavailable dates for the booking calendar. Loaded client- or server-side; no API.",
+  "type": "object",
+  "properties": {
+    "unavailable": {
+      "type": "array",
+      "items": { "type": "string", "format": "date" },
+      "description": "List of ISO date strings (YYYY-MM-DD) that are reserved."
+    },
+    "unavailableRanges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": { "type": "string", "format": "date" },
+          "to": { "type": "string", "format": "date" }
+        },
+        "required": ["from", "to"]
+      },
+      "description": "Optional date ranges (inclusive) that are reserved."
+    }
+  },
+  "oneOf": [
+    { "required": ["unavailable"] },
+    { "required": ["unavailableRanges"] }
+  ]
+}

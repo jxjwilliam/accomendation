@@ -15,8 +15,8 @@ export default async function PoliciesPage({ params }: PoliciesPageProps) {
   const property = await getProperty(locale);
   const policies = property.policies;
   return (
-    <div className="container px-4 py-6 sm:py-8 md:px-6">
-      <h1 className="text-2xl font-bold">Policies</h1>
+    <div className="container w-full max-w-5xl px-4 py-6 sm:py-8 md:px-6">
+      <h1 className="text-2xl font-bold leading-tight sm:text-3xl">Policies</h1>
       {policies?.externalUrl ? (
         <a
           href={policies.externalUrl}
@@ -27,7 +27,7 @@ export default async function PoliciesPage({ params }: PoliciesPageProps) {
           View full policies
         </a>
       ) : policies ? (
-        <div className="mt-4 space-y-4 text-base">
+        <div className="mt-4 space-y-4 text-base leading-relaxed">
           {policies.checkInOut && (
             <section>
               <h2 className="font-semibold">Check-in & Check-out</h2>

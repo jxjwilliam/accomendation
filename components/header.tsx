@@ -28,17 +28,23 @@ export function Header({ currentLocale }: HeaderProps) {
           <img src="/logo.svg" alt="" className="h-8 w-auto" width={120} height={40} />
           <span className="sr-only">Family Hotel</span>
         </Link>
-        <nav className="flex items-center gap-4" aria-label="Main">
-          <Link href={`/${currentLocale}/property`} className="text-sm underline-offset-4 hover:underline">
+        <nav className="flex items-center gap-2 sm:gap-4" aria-label="Main">
+          <Link
+            href={`/${currentLocale}/property`}
+            className="min-h-11 min-w-11 cursor-pointer rounded-md px-3 py-2 text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+          >
             Property
           </Link>
-          <Link href={`/${currentLocale}/policies`} className="text-sm underline-offset-4 hover:underline">
+          <Link
+            href={`/${currentLocale}/policies`}
+            className="min-h-11 min-w-11 cursor-pointer rounded-md px-3 py-2 text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+          >
             Policies
           </Link>
           <span aria-label="Language selection">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" aria-haspopup="listbox">
+              <Button variant="outline" size="sm" className="min-h-11 min-w-[7rem]" aria-haspopup="listbox">
                 {localeLabels[currentLocale]}
                 <ChevronDown className="ml-1 size-4" />
               </Button>

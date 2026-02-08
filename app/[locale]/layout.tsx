@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import type { Locale } from "@/lib/i18n";
 import { locales } from "@/lib/i18n";
 
@@ -40,9 +41,10 @@ export default async function LocaleLayout({
 }>) {
   const { locale } = (await params) as { locale: Locale };
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header currentLocale={locale} />
-      <main className="min-h-screen">{children}</main>
-    </>
+      <main className="flex-1">{children}</main>
+      <Footer locale={locale} />
+    </div>
   );
 }
