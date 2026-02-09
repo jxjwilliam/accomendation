@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -13,9 +12,6 @@ import { BookingLinks } from "@/components/booking-links";
 import { BookingCalendarCard } from "@/components/booking-calendar-card";
 import type { Property } from "@/lib/types";
 import type { BookingChannel } from "@/lib/types";
-
-/** Decorative images for the popup (from public folder). */
-const POPUP_IMAGES = ["/1.png", "/2.png", "/3.png"] as const;
 
 interface WonderfulStaySurreyDialogProps {
   property: Property;
@@ -64,24 +60,6 @@ export function WonderfulStaySurreyDialog({
               {property.location.addressLine ??
                 `${property.location.city}, ${property.location.region}, ${property.location.country}`}
             </p>
-
-            {/* Decorative strip using public 1.png, 2.png, 3.png */}
-            <div className="flex gap-3 overflow-hidden rounded-xl border border-border bg-muted/30 p-2">
-              {POPUP_IMAGES.map((src, i) => (
-                <div
-                  key={src}
-                  className="relative h-24 min-w-[120px] flex-1 overflow-hidden rounded-lg bg-muted"
-                >
-                  <Image
-                    src={src}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="120px"
-                  />
-                </div>
-              ))}
-            </div>
 
             <section aria-label="Booking and contact">
               <BookingLinks channels={channels} />

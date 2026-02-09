@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion as useReducedMotionFramer } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
@@ -51,8 +50,10 @@ function getPropertyDetailImagePath(imageNum: number): string {
   return `/images/image_${String(imageNum).padStart(3, "0")}.jpg`;
 }
 
-/** Decorative images from public folder for vivid UI. */
-const HIGHLIGHT_IMAGES = ["/1.png", "/2.png", "/3.png"] as const;
+/** Section icons: 1.png = Book Your Stay (bed), 2.png = Get in Touch, 3.png = House Rules. */
+const SECTION_ICON_BOOK = "/1.png";
+const SECTION_ICON_GET_IN_TOUCH = "/2.png";
+const SECTION_ICON_HOUSE_RULES = "/3.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -101,7 +102,6 @@ export function HomeSectionsVanhomestay({
 }: HomeSectionsVanhomestayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
-  const reduceMotionFramer = useReducedMotionFramer();
 
   useEffect(() => {
     if (reduceMotion || !containerRef.current) return;
@@ -139,37 +139,6 @@ export function HomeSectionsVanhomestay({
   return (
     <div ref={containerRef} className="mx-auto w-full max-w-6xl">
       <ScrollSpyUpdater />
-      {/* Decorative highlight strip using 1.png, 2.png, 3.png */}
-      <section
-        data-scroll-section
-        className="section-padding bg-linear-to-br from-orange-50/30 to-white"
-        aria-hidden
-      >
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
-            {HIGHLIGHT_IMAGES.map((src, i) => (
-              <motion.div
-                key={src}
-                initial={reduceMotionFramer ? false : { opacity: 0, y: 24, scale: 0.96 }}
-                whileInView={reduceMotionFramer ? {} : { opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                whileHover={reduceMotionFramer ? {} : { scale: 1.03, y: -4 }}
-                className="relative h-32 w-full max-w-[200px] overflow-hidden rounded-2xl border border-border bg-muted shadow-lg md:h-40 md:max-w-[240px]"
-              >
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-105"
-                  sizes="(max-width: 768px) 200px, 240px"
-                />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Why Choose Us - 4 cards with icons */}
       {whyItems.length > 0 && (
         <section
@@ -274,7 +243,18 @@ export function HomeSectionsVanhomestay({
           {/* House Rules panel - structured rules (vanhomestay reference) */}
           {(property.houseRulesItems?.length || property.houseRules || property.policies) && (
             <div className="rounded-2xl border border-border bg-linear-to-br from-orange-50/70 to-white p-8">
-              <h3 className="mb-6 text-2xl font-bold text-foreground">House Rules</h3>
+              <div className="mb-6 flex flex-wrap items-center gap-4">
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border bg-muted">
+                  <Image
+                    src={SECTION_ICON_HOUSE_RULES}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="56px"
+                  />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground">House Rules</h3>
+              </div>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 {property.houseRulesItems?.length
                   ? property.houseRulesItems.map((item) => (
@@ -363,6 +343,15 @@ export function HomeSectionsVanhomestay({
       >
         <div className="container mx-auto px-4 md:px-6">
           <div className="mb-12 text-center">
+            <div className="relative mx-auto mb-4 h-16 w-16 overflow-hidden rounded-xl border border-border bg-muted">
+              <Image
+                src={SECTION_ICON_BOOK}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="64px"
+              />
+            </div>
             <h2 className="section-title text-primary">Book Your Stay</h2>
             <div className="section-title-underline mt-2" aria-hidden />
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
@@ -388,6 +377,15 @@ export function HomeSectionsVanhomestay({
       >
         <div className="container mx-auto px-4 md:px-6">
           <div className="mb-10 text-center">
+            <div className="relative mx-auto mb-4 h-16 w-16 overflow-hidden rounded-xl border border-border bg-muted">
+              <Image
+                src={SECTION_ICON_GET_IN_TOUCH}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="64px"
+              />
+            </div>
             <h2 className="section-title text-primary">Get in Touch</h2>
             <div className="section-title-underline mt-2" aria-hidden />
           </div>
