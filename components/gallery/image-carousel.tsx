@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Image from "next/image";
-import { GALLERY_IMAGE_PATHS, getGalleryImageAlt } from "@/lib/gallery-images";
+import { CARD_IMAGE_PATHS, getCardImageAlt } from "@/lib/gallery-images";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -11,7 +11,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
  */
 export function ImageCarousel() {
   const [index, setIndex] = useState(0);
-  const len = GALLERY_IMAGE_PATHS.length;
+  const len = CARD_IMAGE_PATHS.length;
   const goPrev = useCallback(() => {
     setIndex((i) => (i - 1 + len) % len);
   }, [len]);
@@ -28,10 +28,10 @@ export function ImageCarousel() {
         if (e.key === "ArrowRight") goNext();
       }}
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-muted">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-muted transition-transform duration-200 hover:scale-[1.01] motion-reduce:duration-0 motion-reduce:hover:scale-100">
         <Image
-          src={GALLERY_IMAGE_PATHS[index]}
-          alt={getGalleryImageAlt(index)}
+          src={CARD_IMAGE_PATHS[index]}
+          alt={getCardImageAlt(index)}
           fill
           sizes="(max-width: 768px) 100vw, 80vw"
           className="object-cover"

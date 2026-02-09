@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getBaseUrl } from "@/lib/seo";
 import { locales } from "@/lib/i18n";
 
-const ROUTES = ["", "property", "policies"];
+const ROUTES = ["", "gallery", "property", "policies"];
 
 /**
  * Generates sitemap.xml with all indexable pages (locales × routes).

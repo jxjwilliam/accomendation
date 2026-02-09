@@ -5,6 +5,10 @@ Auto-generated from all feature plans. Last updated: 2026-02-07
 ## Active Technologies
 - TypeScript 5.x (latest stable) + Next.js 15 (App Router), React 19, Tailwind CSS v4, shadcn/ui, Framer Motion (motion/react), GSAP (gsap), next-intl (002-ui-new-features)
 - N/A for new UI; optional file-based unavailable dates (e.g. `content/unavailable-dates.json`) for calendar (002-ui-new-features)
+- TypeScript 5.x (latest stable) + Next.js 15 (App Router), React 19, next-intl (003-add-seo)
+- N/A (SEO config and defaults in code or file-based content) (003-add-seo)
+- TypeScript 5.6+, React 19 + Next.js 15 (App Router), GSAP 3.14+ (with ScrollTrigger), Motion 12+ (Framer Motion), Tailwind CSS v4, existing shadcn/ui and app components (004-animation-scroll-effects)
+- N/A (frontend-only; content from existing JSON and static assets under `content/`, `public/images`) (004-animation-scroll-effects)
 
 - TypeScript 5.x (latest stable) + Next.js 15 (App Router), React 19, Tailwind CSS v4, shadcn/ui, next-intl (or similar for i18n) (001-family-hotel-ota-app)
 
@@ -27,9 +31,10 @@ npm test && npm run lint
 TypeScript 5.x (latest stable): Follow standard conventions
 
 ## Recent Changes
+- 004-animation-scroll-effects: Added TypeScript 5.6+, React 19 + Next.js 15 (App Router), GSAP 3.14+ (with ScrollTrigger), Motion 12+ (Framer Motion), Tailwind CSS v4, existing shadcn/ui and app components
+- 003-add-seo: Added TypeScript 5.x (latest stable) + Next.js 15 (App Router), React 19, next-intl
 - 002-ui-new-features: Added TypeScript 5.x (latest stable) + Next.js 15 (App Router), React 19, Tailwind CSS v4, shadcn/ui, Framer Motion (motion/react), GSAP (gsap), next-intl
 
-- 001-family-hotel-ota-app: Added TypeScript 5.x (latest stable) + Next.js 15 (App Router), React 19, Tailwind CSS v4, shadcn/ui, next-intl (or similar for i18n)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

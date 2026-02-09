@@ -1,32 +1,38 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { ImageMarquee } from "./image-marquee";
 import { ImageCarousel } from "./image-carousel";
 
 /**
- * Gallery section: marquee + carousel. Uses all images from lib/gallery-images.
- * Optional scroll-trigger: fade-in when in view (respects reduced-motion).
+ * Gallery section on home: carousel + link to full gallery page.
+ * Marquee removed; full gallery available at /[locale]/gallery.
  */
-export function Gallery() {
+export function Gallery({ locale }: { locale: string }) {
   const reducedMotion = useReducedMotion();
   return (
     <motion.section
-      className="space-y-10"
+      className="space-y-6"
       aria-labelledby="gallery-heading"
       initial={reducedMotion ? undefined : { opacity: 0, y: 12 }}
       whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.35 }}
     >
-      <h2 id="gallery-heading" className="text-lg font-semibold leading-tight">
-        Gallery
-      </h2>
-      <ImageMarquee />
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <h2 id="gallery-heading" className="font-serif text-2xl font-semibold leading-tight sm:text-3xl">
+          Gallery
+        </h2>
+        <Link
+          href={`/${locale}/gallery`}
+          className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+        >
+          View all photos →
+        </Link>
+      </div>
       <ImageCarousel />
     </motion.section>
   );
 }
 
-export { ImageMarquee } from "./image-marquee";
 export { ImageCarousel } from "./image-carousel";

@@ -16,7 +16,7 @@ export function BookingLinks({ channels }: BookingLinksProps) {
           href={ch.url}
           target={ch.openInNewTab !== false ? "_blank" : undefined}
           rel={ch.openInNewTab !== false ? "noopener noreferrer" : undefined}
-          className="inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+          className="inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:bg-primary/90 focus-visible:outline focus-visible:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring motion-reduce:duration-0 motion-reduce:hover:scale-100 motion-reduce:focus-visible:scale-100"
         >
           {ch.label}
         </a>

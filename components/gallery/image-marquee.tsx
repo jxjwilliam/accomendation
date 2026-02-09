@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import { useReducedMotion } from "motion/react";
-import { GALLERY_IMAGE_PATHS, getGalleryImageAlt } from "@/lib/gallery-images";
+import { CARD_IMAGE_PATHS, getCardImageAlt } from "@/lib/gallery-images";
 
 /**
- * Horizontal marquee of gallery images. Respects prefers-reduced-motion.
+ * Horizontal marquee of gallery images (second-class curated set). Respects prefers-reduced-motion.
  */
 export function ImageMarquee() {
   const reducedMotion = useReducedMotion();
-  const duplicated = [...GALLERY_IMAGE_PATHS, ...GALLERY_IMAGE_PATHS];
+  const duplicated = [...CARD_IMAGE_PATHS, ...CARD_IMAGE_PATHS];
   return (
     <div className="w-full overflow-hidden py-4" aria-label="Property photos">
       <div
@@ -22,7 +22,7 @@ export function ImageMarquee() {
           >
             <Image
               src={src}
-              alt={getGalleryImageAlt(i % GALLERY_IMAGE_PATHS.length)}
+              alt={getCardImageAlt(i % CARD_IMAGE_PATHS.length)}
               fill
               sizes="192px"
               className="object-cover"

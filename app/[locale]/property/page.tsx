@@ -40,7 +40,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
     <div className="container w-full max-w-5xl px-4 py-6 sm:py-8 md:px-6">
       <PropertyDetail property={property} bookingChannels={channels} />
       <section className="mt-8 border-t pt-8" aria-label="Gallery">
-        <Gallery />
+        <Gallery locale={locale} />
       </section>
       <section className="mt-8 border-t pt-8" aria-label="Map">
         <h2 className="text-lg font-semibold leading-tight">Location</h2>
