@@ -19,10 +19,18 @@ export interface Property {
   name: string;
   location: Location;
   typeOfAccommodation: string;
+  /** Optional hero tagline; when set, used as hero subtitle instead of typeOfAccommodation. */
+  heroSubtitle?: string;
   description: string;
   amenities: string[];
   photos: string[];
   policies?: Policies;
+  /** Optional: bullet points for "Why choose us" on home. */
+  whyChooseUs?: string[];
+  /** Optional: property details (e.g. bedrooms, bathrooms) for home. */
+  propertyDetails?: Record<string, string> | string[];
+  /** Optional: house rules summary for home. */
+  houseRules?: string | string[];
 }
 
 export type BookingChannelType = "airbnb" | "booking.com" | "vrbo" | "contact";
@@ -49,9 +57,34 @@ export interface FooterLink {
   external?: boolean;
 }
 
-/** Footer content: business name, address, and links. */
+/** Footer link that opens a modal (e.g. Policies, FAQ). */
+export interface FooterModalLink {
+  label: string;
+  modalId: "policies" | "faq";
+}
+
+/** Footer content: business name, address, links, and optional modal links. */
 export interface FooterContent {
   businessName: string;
   addressLine: string;
   links: FooterLink[];
+  /** Links that open in-page modals instead of navigating. */
+  modalLinks?: FooterModalLink[];
+  policiesContent?: { checkInOut?: string; cancellation?: string; externalUrl?: string };
+  faqContent?: { title: string; items: { q: string; a: string }[] };
+}
+
+/** UI copy per locale (nav, gallery, hero labels). */
+export interface UiStrings {
+  nav: { home: string; property: string; contact: string };
+  gallery: {
+    title: string;
+    subtitle: string;
+    viewAllPhotos: string;
+    backToHome: string;
+    viewGrid: string;
+    viewMasonry: string;
+    viewList: string;
+  };
+  hero: { ctaLabel: string };
 }

@@ -16,10 +16,10 @@ const DEFAULT_OG_IMAGE_PATH = "/images/image_001.jpg";
 
 /** Default titles per locale (family hotel, Surrey, Vancouver BC). */
 const DEFAULT_TITLES: Record<Locale, string> = {
-  en: "Family Hotel | Surrey Vancouver BC",
-  fr: "Hôtel familial | Surrey Vancouver BC",
-  "zh-Hans": "家庭旅馆 | 素里 温哥华 BC",
-  "zh-Hant": "家庭旅館 | 素里 溫哥華 BC",
+  en: "Wonderful Family Stay | Surrey Vancouver BC",
+  fr: "Wonderful Family Stay | Surrey Vancouver BC",
+  "zh-Hans": "Wonderful Family Stay | 素里 温哥华 BC",
+  "zh-Hant": "Wonderful Family Stay | 素里 溫哥華 BC",
 };
 
 /** Default meta descriptions per locale (comfort, fully equipped, accommodation). */
@@ -31,36 +31,7 @@ const DEFAULT_DESCRIPTIONS: Record<Locale, string> = {
 };
 
 /** Per-page overrides: path segment -> { title?, description? } (locale-agnostic keys). */
-const PAGE_OVERRIDES: Record<string, { title?: Record<Locale, string>; description?: Record<Locale, string> }> = {
-  property: {
-    title: {
-      en: "Property | Family Hotel Surrey Vancouver BC",
-      fr: "Propriété | Hôtel familial Surrey Vancouver BC",
-      "zh-Hans": "客房 | 素里家庭旅馆 温哥华 BC",
-      "zh-Hant": "客房 | 素里家庭旅館 溫哥華 BC",
-    },
-    description: {
-      en: "Comfortable, fully equipped family hotel in Surrey, Vancouver BC. View details and book.",
-      fr: "Hôtel familial confortable et bien équipé à Surrey, Vancouver BC. Détails et réservation.",
-      "zh-Hans": "素里温哥华 BC 舒适、功能齐全的家庭旅馆。查看详情并预订。",
-      "zh-Hant": "素里溫哥華 BC 舒適、功能齊全的家庭旅館。查看詳情並預訂。",
-    },
-  },
-  policies: {
-    title: {
-      en: "Policies | Family Hotel Surrey Vancouver BC",
-      fr: "Politiques | Hôtel familial Surrey Vancouver BC",
-      "zh-Hans": "政策 | 素里家庭旅馆 温哥华 BC",
-      "zh-Hant": "政策 | 素里家庭旅館 溫哥華 BC",
-    },
-    description: {
-      en: "Check-in, check-out and cancellation policies. Family hotel in Surrey, Vancouver BC.",
-      fr: "Politiques d'enregistrement et d'annulation. Hôtel familial à Surrey, Vancouver BC.",
-      "zh-Hans": "入住、退房与取消政策。素里温哥华 BC 家庭旅馆。",
-      "zh-Hant": "入住、退房與取消政策。素里溫哥華 BC 家庭旅館。",
-    },
-  },
-};
+const PAGE_OVERRIDES: Record<string, { title?: Record<Locale, string>; description?: Record<Locale, string> }> = {};
 
 /**
  * Returns the site base URL for absolute links (sitemap, robots, OG).
@@ -130,7 +101,7 @@ export function getBusiness(locale?: Locale): LodgingBusinessData {
   const data: LodgingBusinessData = {
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
-    name: "Family Hotel Surrey",
+    name: "Wonderful Family Stay Surrey",
     description: desc,
     url: baseUrl,
     address: {

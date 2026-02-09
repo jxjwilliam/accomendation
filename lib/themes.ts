@@ -15,6 +15,14 @@ export const themeLabels: Record<ThemeId, string> = {
 
 export const defaultThemeId: ThemeId = "elegant-luxury";
 
+/** Primary color (oklch) per theme for swatch and label in theme dropdown. */
+export const themePrimaryColors: Record<ThemeId, string> = {
+  "elegant-luxury": "oklch(0.4650 0.1470 24.9381)",
+  "sunset-horizon": "oklch(0.55 0.18 45)",
+  "ocean-breeze": "oklch(0.5 0.15 230)",
+  candyland: "oklch(0.6 0.2 350)",
+};
+
 export function isValidTheme(value: string): value is ThemeId {
   return themeIds.includes(value as ThemeId);
 }

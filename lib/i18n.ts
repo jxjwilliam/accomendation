@@ -15,6 +15,14 @@ export const localeLabels: Record<Locale, string> = {
   "zh-Hant": "繁體",
 };
 
+/** Short or icon-like label per locale for nav (e.g. flag emoji). */
+export const localeIcons: Record<Locale, string> = {
+  en: "EN",
+  fr: "FR",
+  "zh-Hans": "简",
+  "zh-Hant": "繁",
+};
+
 export function isValidLocale(value: string): value is Locale {
   return locales.includes(value as Locale);
 }

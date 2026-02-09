@@ -9,56 +9,75 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { localeLabels, type Locale } from "@/lib/i18n";
+import { localeLabels, localeIcons, type Locale } from "@/lib/i18n";
 import { locales } from "@/lib/i18n";
-import { Languages } from "lucide-react";
+import { Globe, Home, Building2, Mail } from "lucide-react";
 
 interface HeaderProps {
   currentLocale: Locale;
+  navLabels: { home: string; property: string; contact: string };
+  /** Optional: which section id is in view for highlight (e.g. from scroll-spy). */
+  activeSection?: string | null;
 }
 
-/**
- * Site header: nav links, gallery, theme switcher, language selector (icon).
- * Language selector uses Languages icon like vanhomestay reference.
- */
-export function Header({ currentLocale }: HeaderProps) {
+const NAV_ITEMS: {
+  id: string;
+  getHref: (locale: string) => string;
+  icon: React.ComponentType<{ className?: string }>;
+}[] = [
+  { id: "home", getHref: (locale) => `/${locale}#home`, icon: Home },
+  { id: "property-details", getHref: (locale) => `/${locale}#property-details`, icon: Building2 },
+  { id: "contact", getHref: (locale) => `/${locale}#contact`, icon: Mail },
+];
+
+export function Header({ currentLocale, navLabels, activeSection }: HeaderProps) {
+  const labels = [navLabels.home, navLabels.property, navLabels.contact];
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="container flex h-14 items-center justify-between px-4 sm:px-6">
-        <Link href={`/${currentLocale}`} className="flex items-center gap-2 font-semibold">
-          <img src="/logo.svg" alt="" className="h-8 w-auto" width={120} height={40} />
-          <span className="sr-only">Family Hotel</span>
+    <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md dark:bg-background/80">
+      <div className="container flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
+        <Link
+          href={`/${currentLocale}`}
+          className="flex shrink-0 items-center gap-2 font-semibold text-foreground hover:text-primary"
+        >
+          <img
+            src="/2.png"
+            alt=""
+            className="h-10 w-auto max-h-12 object-contain"
+            width={120}
+            height={48}
+          />
+          <span className="hidden text-base sm:inline">Wonderful Stay</span>
         </Link>
-        <nav className="flex items-center gap-1 sm:gap-2" aria-label="Main">
-          <Link
-            href={`/${currentLocale}/property`}
-            className="min-h-9 min-w-9 rounded-md px-3 py-2 text-sm font-medium underline-offset-4 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Property
-          </Link>
-          <Link
-            href={`/${currentLocale}/gallery`}
-            className="min-h-9 min-w-9 rounded-md px-3 py-2 text-sm font-medium underline-offset-4 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Gallery
-          </Link>
-          <Link
-            href={`/${currentLocale}/policies`}
-            className="min-h-9 min-w-9 rounded-md px-3 py-2 text-sm font-medium underline-offset-4 hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Policies
-          </Link>
+        <nav
+          className="flex flex-1 items-center justify-end gap-1 sm:gap-2"
+          aria-label="Main"
+        >
+          {NAV_ITEMS.map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.id}
+                href={item.getHref(currentLocale)}
+                className={`min-h-[44px] min-w-[44px] rounded-md px-3 py-2 text-sm font-medium underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring inline-flex items-center gap-2 ${
+                  activeSection === item.id ? "text-primary font-semibold" : "text-foreground"
+                }`}
+              >
+                <Icon className="size-4 shrink-0" aria-hidden />
+                {labels[i]}
+              </Link>
+            );
+          })}
           <ThemeSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
-                className="h-9 w-9 shrink-0"
+                className="h-11 min-h-[44px] w-11 min-w-[44px] shrink-0"
                 aria-label="Select language"
                 aria-haspopup="listbox"
               >
-                <Languages className="size-4" />
+                <Globe className="size-4" aria-hidden />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" role="listbox" aria-label="Language options">
@@ -66,9 +85,15 @@ export function Header({ currentLocale }: HeaderProps) {
                 <DropdownMenuItem key={locale} asChild role="option">
                   <Link
                     href={`/${locale}`}
-                    className="cursor-pointer"
+                    className="flex cursor-pointer items-center gap-2"
                     aria-selected={currentLocale === locale}
                   >
+                    <span
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-muted text-xs font-semibold"
+                      aria-hidden
+                    >
+                      {localeIcons[locale]}
+                    </span>
                     {localeLabels[locale]}
                   </Link>
                 </DropdownMenuItem>

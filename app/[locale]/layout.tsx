@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { JsonLdLodging } from "@/components/json-ld-lodging";
+import { ScrollSpyProvider } from "@/lib/scroll-spy-context";
+import { LayoutClient } from "@/components/layout-client";
 import type { Locale } from "@/lib/i18n";
 import { locales } from "@/lib/i18n";
 import { getDefaultTitle, getDefaultDescription, getBaseUrl, getOgImageUrl } from "@/lib/seo";
+import { getUiStrings } from "@/lib/content";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -34,9 +36,9 @@ export async function generateMetadata({
       title,
       description,
       url: baseUrl,
-      siteName: "Family Hotel Surrey",
+      siteName: "Wonderful Family Stay Surrey",
       locale: locale,
-      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: "Family Hotel Surrey" }],
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: "Wonderful Family Stay Surrey" }],
     },
     twitter: {
       card: "summary_large_image",
@@ -58,12 +60,16 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }>) {
   const { locale } = (await params) as { locale: Locale };
+  const uiStrings = await getUiStrings(locale);
   return (
     <div className="flex min-h-screen flex-col">
       <JsonLdLodging locale={locale} />
-      <Header currentLocale={locale} />
-      <main className="flex-1">{children}</main>
-      <Footer locale={locale} />
+      <ScrollSpyProvider>
+        <LayoutClient locale={locale} uiStrings={uiStrings}>
+          {children}
+        </LayoutClient>
+        <Footer locale={locale} />
+      </ScrollSpyProvider>
     </div>
   );
 }

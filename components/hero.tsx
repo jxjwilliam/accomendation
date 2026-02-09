@@ -44,6 +44,7 @@ export function Hero({ title, subtitle, images, ctaLabel, locale = "en" }: HeroP
 
   return (
     <section
+      id="home"
       className="relative h-screen min-h-[600px] w-full overflow-hidden"
       aria-label="Hero"
     >
@@ -74,23 +75,21 @@ export function Hero({ title, subtitle, images, ctaLabel, locale = "en" }: HeroP
           initial={reduceMotion ? false : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: reduceMotion ? 0 : 0.6 }}
-          className="text-center text-white px-4 max-w-4xl"
+          className="max-w-4xl px-4 text-center text-white"
         >
-          <h1 className="font-serif text-5xl font-bold leading-tight drop-shadow-md sm:text-6xl md:text-7xl lg:text-8xl">
+          <h1 className="text-5xl font-bold leading-tight drop-shadow-md md:text-7xl mb-4">
             {title}
           </h1>
-          <p className="mt-4 font-sans text-xl text-white/95 sm:text-2xl md:text-3xl">
+          <p className="mb-8 text-xl text-white/90 md:text-2xl">
             {subtitle}
           </p>
-          <div className="mt-8">
-            <Button
-              asChild
-              size="lg"
-              className="min-h-14 rounded-md px-10 py-6 text-lg font-semibold sm:min-h-16 sm:px-12 sm:py-7 sm:text-xl bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <a href={`/${locale}#booking`}>{ctaLabel}</a>
-            </Button>
-          </div>
+          <Button
+            asChild
+            size="lg"
+            className="min-h-14 rounded-md bg-primary px-8 py-6 text-lg font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <a href={`/${locale}#contact`}>{ctaLabel}</a>
+          </Button>
         </motion.div>
       </div>
 

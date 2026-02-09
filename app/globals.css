@@ -260,4 +260,41 @@
       transition-duration: 0.01ms !important;
     }
   }
+
+  /* Vanhomestay reference: section layout and styling */
+  .section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  @media (min-width: 768px) {
+    .section-padding {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+  }
+  .section-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  @media (min-width: 640px) {
+    .section-title {
+      font-size: 2.25rem;
+    }
+  }
+  .section-title-underline {
+    width: 5rem;
+    height: 4px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--accent), color-mix(in oklch, var(--accent) 50%, transparent));
+  }
+  .card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
 }
