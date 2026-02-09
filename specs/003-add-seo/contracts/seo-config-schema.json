@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "seo-config-schema",
+  "title": "SEO configuration",
+  "description": "Schema for site-wide and per-page SEO defaults. Used by lib/seo.ts to drive metadata and JSON-LD. Vancouver Surrey family hotel context.",
+  "type": "object",
+  "required": ["siteName", "baseUrl", "defaultTitle", "defaultDescription"],
+  "properties": {
+    "siteName": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "baseUrl": { "type": "string", "format": "uri", "description": "Absolute site URL (e.g. https://example.com)" },
+    "defaultTitle": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "defaultDescription": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "ogImagePath": { "type": "string", "description": "Path or absolute URL for default OG image (e.g. /images/og-default.jpg)" },
+    "twitterHandle": { "type": "string", "description": "Optional @handle for Twitter card" },
+    "business": {
+      "type": "object",
+      "description": "Lodging business data for JSON-LD and consistent copy",
+      "required": ["name", "description", "address"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "telephone": { "type": "string" },
+        "image": { "type": "string", "format": "uri" },
+        "priceRange": { "type": "string" },
+        "address": {
+          "type": "object",
+          "required": ["addressCountry", "addressRegion", "addressLocality"],
+          "properties": {
+            "addressCountry": { "type": "string" },
+            "addressRegion": { "type": "string" },
+            "addressLocality": { "type": "string" },
+            "streetAddress": { "type": "string" },
+            "postalCode": { "type": "string" }
+          }
+        },
+        "amenityFeature": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "availableLanguage": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "checkinTime": { "type": "string" },
+        "checkoutTime": { "type": "string" }
+      }
+    },
+    "pages": {
+      "type": "object",
+      "description": "Optional per-path overrides; key = path pattern (e.g. property, policies)",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "maxLength": 60 },
+          "description": { "type": "string", "maxLength": 160 },
+          "ogImagePath": { "type": "string" }
+        }
+      }
+    }
+  }
+}

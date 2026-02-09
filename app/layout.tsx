@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { getDefaultTitle, getDefaultDescription } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Family Hotel | Surrey Vancouver BC",
-  description: "Family hotel in Surrey, Vancouver BC, Canada",
+  title: getDefaultTitle("en"),
+  description: getDefaultDescription("en"),
 };
 
 export default function RootLayout({

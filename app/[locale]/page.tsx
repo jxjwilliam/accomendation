@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import type { Locale } from "@/lib/i18n";
 import { getProperty, getBookingChannels } from "@/lib/content";
+import { getDefaultTitle, getDefaultDescription, getBaseUrl } from "@/lib/seo";
 import { BookingLinks } from "@/components/booking-links";
 import { GoogleMap } from "@/components/google-map";
 import { Gallery } from "@/components/gallery";
@@ -7,6 +9,19 @@ import { BookingCalendarCard } from "@/components/booking-calendar-card";
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const loc = locale as Locale;
+  const baseUrl = getBaseUrl();
+  const canonical = `${baseUrl}/${locale}`;
+  return {
+    title: getDefaultTitle(loc),
+    description: getDefaultDescription(loc),
+    alternates: { canonical },
+    openGraph: { url: canonical },
+  };
 }
 
 export default async function HomePage({ params }: HomePageProps) {

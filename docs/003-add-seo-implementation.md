@@ -29,3 +29,7 @@ SEO support for the family hotel site: unique metadata per page (title, descript
 ## Tasks
 
 All 18 tasks in `specs/003-add-seo/tasks.md` completed (T001–T018).
+
+---
+
+*Pre-commit: implementation summary updated; branch ready for merge.*
