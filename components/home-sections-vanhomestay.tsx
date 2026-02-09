@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { motion, useReducedMotion as useReducedMotionFramer } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
@@ -26,6 +27,9 @@ import { GoogleMap } from "@/components/google-map";
 import { BookingForm } from "@/components/booking-form";
 import { BookingCalendarCard } from "@/components/booking-calendar-card";
 import { ScrollSpyUpdater } from "@/components/scroll-spy-updater";
+import { WonderfulStaySurreyDialog } from "@/components/wonderful-stay-surrey-dialog";
+import { GetInTouchForm } from "@/components/get-in-touch-form";
+import { CONTACT } from "@/lib/contact";
 
 /** Property detail room cards: title + image number (e.g. 5 → /images/image_005.jpg). Vanhomestay-style. */
 const PROPERTY_DETAIL_ROOMS: { title: string; imageNum: number }[] = [
@@ -46,6 +50,9 @@ const PROPERTY_DETAIL_ROOMS: { title: string; imageNum: number }[] = [
 function getPropertyDetailImagePath(imageNum: number): string {
   return `/images/image_${String(imageNum).padStart(3, "0")}.jpg`;
 }
+
+/** Decorative images from public folder for vivid UI. */
+const HIGHLIGHT_IMAGES = ["/1.png", "/2.png", "/3.png"] as const;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -94,6 +101,7 @@ export function HomeSectionsVanhomestay({
 }: HomeSectionsVanhomestayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  const reduceMotionFramer = useReducedMotionFramer();
 
   useEffect(() => {
     if (reduceMotion || !containerRef.current) return;
@@ -131,32 +139,33 @@ export function HomeSectionsVanhomestay({
   return (
     <div ref={containerRef} className="mx-auto w-full max-w-6xl">
       <ScrollSpyUpdater />
-      {/* Welcome + Booking */}
+      {/* Decorative highlight strip using 1.png, 2.png, 3.png */}
       <section
         data-scroll-section
-        className="section-padding bg-white"
-        aria-label="Welcome"
+        className="section-padding bg-linear-to-br from-orange-50/30 to-white"
+        aria-hidden
       >
         <div className="container mx-auto px-4 md:px-6">
-          <div className="rounded-xl border border-border bg-linear-to-br from-white to-orange-50/50 p-6 shadow-sm md:p-8">
-            <h2 className="text-2xl font-bold leading-tight text-foreground sm:text-3xl">
-              {property.name}
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Our property — your home away from home in Surrey, BC.
-            </p>
-            <p className="mt-2 text-lg leading-relaxed text-muted-foreground">
-              {property.typeOfAccommodation}
-            </p>
-            <p className="mt-1 font-medium leading-normal" id="location-block">
-              {property.location.addressLine ?? locationText}
-            </p>
-            <section id="booking" className="mt-6" aria-label="Booking and contact">
-              <BookingLinks channels={channels} />
-            </section>
-            <div className="mt-6">
-              <BookingCalendarCard />
-            </div>
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
+            {HIGHLIGHT_IMAGES.map((src, i) => (
+              <motion.div
+                key={src}
+                initial={reduceMotionFramer ? false : { opacity: 0, y: 24, scale: 0.96 }}
+                whileInView={reduceMotionFramer ? {} : { opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                whileHover={reduceMotionFramer ? {} : { scale: 1.03, y: -4 }}
+                className="relative h-32 w-full max-w-[200px] overflow-hidden rounded-2xl border border-border bg-muted shadow-lg md:h-40 md:max-w-[240px]"
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-105"
+                  sizes="(max-width: 768px) 200px, 240px"
+                />
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -262,55 +271,71 @@ export function HomeSectionsVanhomestay({
             })}
           </div>
 
-          {/* House Rules panel - reference style */}
-          {(property.houseRules || property.policies) && (
+          {/* House Rules panel - structured rules (vanhomestay reference) */}
+          {(property.houseRulesItems?.length || property.houseRules || property.policies) && (
             <div className="rounded-2xl border border-border bg-linear-to-br from-orange-50/70 to-white p-8">
               <h3 className="mb-6 text-2xl font-bold text-foreground">House Rules</h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {property.policies?.checkInOut && (
-                  <div className="flex gap-3">
-                    <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
-                      <div className="h-2 w-2 rounded-full bg-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">Check-in & Check-out</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {property.policies.checkInOut}
-                      </p>
-                    </div>
-                  </div>
-                )}
-                {property.policies?.cancellation && (
-                  <div className="flex gap-3">
-                    <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
-                      <div className="h-2 w-2 rounded-full bg-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">Cancellation</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {property.policies.cancellation}
-                      </p>
-                    </div>
-                  </div>
-                )}
-                {property.houseRules &&
-                  (Array.isArray(property.houseRules) ? (
-                    property.houseRules.map((rule) => (
-                      <div key={rule} className="flex gap-3">
+                {property.houseRulesItems?.length
+                  ? property.houseRulesItems.map((item) => (
+                      <div key={item.title} className="flex gap-3">
                         <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
                           <div className="h-2 w-2 rounded-full bg-primary" />
                         </div>
-                        <p className="text-sm text-muted-foreground">{rule}</p>
+                        <div>
+                          <h4 className="font-semibold text-foreground">{item.title}</h4>
+                          <p className="text-sm text-muted-foreground">{item.description}</p>
+                        </div>
                       </div>
                     ))
-                  ) : (
-                    <div className="flex gap-3 md:col-span-2">
-                      <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
-                        <div className="h-2 w-2 rounded-full bg-primary" />
-                      </div>
-                      <p className="text-sm text-muted-foreground">{property.houseRules}</p>
-                    </div>
-                  ))}
+                  : (
+                    <>
+                      {property.policies?.checkInOut && (
+                        <div className="flex gap-3">
+                          <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+                            <div className="h-2 w-2 rounded-full bg-primary" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-foreground">Check-in & Check-out</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {property.policies.checkInOut}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {property.policies?.cancellation && (
+                        <div className="flex gap-3">
+                          <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+                            <div className="h-2 w-2 rounded-full bg-primary" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-foreground">Cancellation</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {property.policies.cancellation}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {property.houseRules &&
+                        (Array.isArray(property.houseRules) ? (
+                          property.houseRules.map((rule) => (
+                            <div key={rule} className="flex gap-3">
+                              <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+                                <div className="h-2 w-2 rounded-full bg-primary" />
+                              </div>
+                              <p className="text-sm text-muted-foreground">{rule}</p>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="flex gap-3 md:col-span-2">
+                            <div className="mt-1 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+                              <div className="h-2 w-2 rounded-full bg-primary" />
+                            </div>
+                            <p className="text-sm text-muted-foreground">{property.houseRules}</p>
+                          </div>
+                        ))}
+                    </>
+                  )}
                 {property.policies?.externalUrl && (
                   <div className="md:col-span-2">
                     <a
@@ -354,25 +379,65 @@ export function HomeSectionsVanhomestay({
         </div>
       </section>
 
-      {/* Location */}
+      {/* Get in Touch - address, phone, email, map, and simple contact form (vanhomestay reference) */}
       <section
+        id="get-in-touch"
         data-scroll-section
-        className="section-padding bg-white"
-        aria-label="Location"
+        className="section-padding bg-white scroll-mt-20"
+        aria-label="Get in Touch"
       >
         <div className="container mx-auto px-4 md:px-6">
-          <div className="mb-8 text-center">
-            <h2 className="section-title text-primary">Location</h2>
+          <div className="mb-10 text-center">
+            <h2 className="section-title text-primary">Get in Touch</h2>
             <div className="section-title-underline mt-2" aria-hidden />
           </div>
-          <p className="text-center text-muted-foreground">
-            {property.location.addressLine ?? locationText}
-          </p>
-          <GoogleMap
-            address={mapAddress}
-            className="mt-6 rounded-xl overflow-hidden border border-border shadow-lg"
-            title="Wonderful Family Stay location map"
-          />
+
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+            {/* Contact info + map */}
+            <div className="space-y-6">
+              <div>
+                <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                  Address
+                </h3>
+                <p className="text-foreground">
+                  {property.location.addressLine ?? locationText}
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                  Phone
+                </h3>
+                <a
+                  href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
+                  className="text-foreground underline-offset-4 hover:text-primary hover:underline"
+                >
+                  {CONTACT.phone}
+                </a>
+              </div>
+              <div>
+                <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                  Email
+                </h3>
+                <a
+                  href={`mailto:${CONTACT.email}`}
+                  className="text-foreground underline-offset-4 hover:text-primary hover:underline"
+                >
+                  {CONTACT.email}
+                </a>
+              </div>
+              <GoogleMap
+                address={mapAddress}
+                className="mt-4 rounded-xl overflow-hidden border border-border shadow-lg"
+                title="Wonderful Family Stay location map"
+              />
+            </div>
+
+            {/* Simple contact form (distinct from booking form) */}
+            <div className="rounded-xl border border-border bg-linear-to-br from-orange-50/30 to-white p-6 md:p-8">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">Send Message</h3>
+              <GetInTouchForm />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -380,6 +445,13 @@ export function HomeSectionsVanhomestay({
       <section data-scroll-section className="section-padding bg-muted/30">
         <div className="container mx-auto max-w-[75ch] px-4 md:px-6">
           <p className="text-base leading-relaxed text-foreground">{property.description}</p>
+          <div className="mt-8 flex justify-center">
+            <WonderfulStaySurreyDialog
+              property={property}
+              channels={channels}
+              triggerLabel={`About ${property.name}`}
+            />
+          </div>
         </div>
       </section>
     </div>

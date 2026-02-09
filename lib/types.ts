@@ -29,8 +29,10 @@ export interface Property {
   whyChooseUs?: string[];
   /** Optional: property details (e.g. bedrooms, bathrooms) for home. */
   propertyDetails?: Record<string, string> | string[];
-  /** Optional: house rules summary for home. */
+  /** Optional: house rules summary for home (legacy string or list). */
   houseRules?: string | string[];
+  /** Optional: structured house rules (title + description) for home. */
+  houseRulesItems?: { title: string; description: string }[];
 }
 
 export type BookingChannelType = "airbnb" | "booking.com" | "vrbo" | "contact";

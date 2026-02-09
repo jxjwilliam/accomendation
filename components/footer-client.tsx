@@ -3,12 +3,31 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
+  Images,
+  CalendarCheck,
+  FileText,
+  HelpCircle,
+} from "lucide-react";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { FooterContent } from "@/lib/types";
+
+/** Icon for a footer nav link by href. */
+function getLinkIcon(href: string) {
+  if (href.includes("gallery")) return Images;
+  if (href.includes("contact") || href === "#contact") return CalendarCheck;
+  return CalendarCheck;
+}
+
+/** Icon for a footer modal link by modalId. */
+function getModalLinkIcon(modalId: "policies" | "faq") {
+  if (modalId === "policies") return FileText;
+  return HelpCircle;
+}
 
 interface FooterClientProps {
   content: FooterContent;
@@ -36,26 +55,34 @@ export function FooterClient({ content }: FooterClientProps) {
               <p className="mt-1 text-sm text-white/80">{addressLine}</p>
             </div>
             <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-4 sm:gap-6">
-              {links.map(({ label, href, external }) => (
-                <Link
-                  key={href + label}
-                  href={href}
-                  className="min-h-11 min-w-11 cursor-pointer rounded-md px-2 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                >
-                  {label}
-                </Link>
-              ))}
-              {modalLinks?.map(({ label, modalId }) => (
-                <button
-                  key={modalId}
-                  type="button"
-                  onClick={() => (modalId === "policies" ? setPoliciesOpen(true) : setFaqOpen(true))}
-                  className="min-h-11 min-w-11 cursor-pointer rounded-md px-2 py-2 text-left text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  {label}
-                </button>
-              ))}
+              {links.map(({ label, href, external }) => {
+                const Icon = getLinkIcon(href);
+                return (
+                  <Link
+                    key={href + label}
+                    href={href}
+                    className="flex min-h-11 min-w-11 cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
+                    <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                    {label}
+                  </Link>
+                );
+              })}
+              {modalLinks?.map(({ label, modalId }) => {
+                const Icon = getModalLinkIcon(modalId);
+                return (
+                  <button
+                    key={modalId}
+                    type="button"
+                    onClick={() => (modalId === "policies" ? setPoliciesOpen(true) : setFaqOpen(true))}
+                    className="flex min-h-11 min-w-11 cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                    {label}
+                  </button>
+                );
+              })}
             </nav>
           </div>
         </div>

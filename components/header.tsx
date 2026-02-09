@@ -11,7 +11,8 @@ import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { localeLabels, localeIcons, type Locale } from "@/lib/i18n";
 import { locales } from "@/lib/i18n";
-import { Globe, Home, Building2, Mail } from "lucide-react";
+import { Globe, Home, Building2, Mail, Phone } from "lucide-react";
+import { CONTACT } from "@/lib/contact";
 
 interface HeaderProps {
   currentLocale: Locale;
@@ -52,6 +53,22 @@ export function Header({ currentLocale, navLabels, activeSection }: HeaderProps)
           className="flex flex-1 items-center justify-end gap-1 sm:gap-2"
           aria-label="Main"
         >
+          <a
+            href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-md px-2 py-2 text-sm text-muted-foreground hover:text-primary focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring md:gap-2 md:justify-start"
+            aria-label={`Phone: ${CONTACT.phone}`}
+          >
+            <Phone className="size-4 shrink-0" aria-hidden />
+            <span className="hidden lg:inline">{CONTACT.phone}</span>
+          </a>
+          <a
+            href={`mailto:${CONTACT.email}`}
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-md px-2 py-2 text-sm text-muted-foreground hover:text-primary focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring md:gap-2 md:justify-start"
+            aria-label={`Email: ${CONTACT.email}`}
+          >
+            <Mail className="size-4 shrink-0" aria-hidden />
+            <span className="hidden lg:inline">{CONTACT.email}</span>
+          </a>
           {NAV_ITEMS.map((item, i) => {
             const Icon = item.icon;
             return (

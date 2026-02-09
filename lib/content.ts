@@ -117,7 +117,6 @@ export async function getFooterContent(locale: Locale): Promise<FooterContent> {
     property.location.addressLine ??
     `${property.location.city}, ${property.location.region}, ${property.location.country}`;
   const links: FooterLink[] = [
-    { label: labels.property, href: `/${locale}#property-details` },
     { label: labels.gallery, href: `/${locale}/gallery` },
     { label: labels.book, href: `/${locale}#contact` },
   ];
