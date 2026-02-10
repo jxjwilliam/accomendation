@@ -6,8 +6,9 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const segments = pathname.split("/").filter(Boolean);
 
+  // Serve default locale at root URL (e.g. / = /zh-Hans) without redirect
   if (segments.length === 0) {
-    return NextResponse.redirect(new URL(`/${defaultLocale}`, request.url));
+    return NextResponse.rewrite(new URL(`/${defaultLocale}`, request.url));
   }
 
   const maybeLocale = segments[0];

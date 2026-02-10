@@ -128,7 +128,7 @@ export function BookingForm() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              placeholder="+1 (604) 000-0000"
+              placeholder="+1 (604) 306-5018"
             />
           </div>
         </div>

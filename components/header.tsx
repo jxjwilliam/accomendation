@@ -16,6 +16,8 @@ import { CONTACT } from "@/lib/contact";
 
 interface HeaderProps {
   currentLocale: Locale;
+  /** Localized brand name for logo (e.g. "Manna Family Hotel", "吗哪家庭旅馆"). */
+  brandName: string;
   navLabels: { home: string; property: string; contact: string };
   /** Optional: which section id is in view for highlight (e.g. from scroll-spy). */
   activeSection?: string | null;
@@ -31,7 +33,7 @@ const NAV_ITEMS: {
   { id: "contact", getHref: (locale) => `/${locale}#contact`, icon: Mail },
 ];
 
-export function Header({ currentLocale, navLabels, activeSection }: HeaderProps) {
+export function Header({ currentLocale, brandName, navLabels, activeSection }: HeaderProps) {
   const labels = [navLabels.home, navLabels.property, navLabels.contact];
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md dark:bg-background/80">
@@ -47,7 +49,7 @@ export function Header({ currentLocale, navLabels, activeSection }: HeaderProps)
             width={120}
             height={48}
           />
-          <span className="hidden text-base sm:inline">Wonderful Stay</span>
+          <span className="hidden text-base sm:inline">{brandName}</span>
         </Link>
         <nav
           className="flex flex-1 items-center justify-end gap-1 sm:gap-2"

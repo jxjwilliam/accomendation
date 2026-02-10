@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { getDefaultTitle, getDefaultDescription } from "@/lib/seo";
+import { defaultLocale } from "@/lib/i18n";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: getDefaultTitle("en"),
-  description: getDefaultDescription("en"),
+  title: getDefaultTitle(defaultLocale),
+  description: getDefaultDescription(defaultLocale),
 };
 
 export default function RootLayout({
@@ -14,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased min-h-screen">
+    <html lang={defaultLocale} suppressHydrationWarning>
+      <body className="antialiased min-h-screen" suppressHydrationWarning>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

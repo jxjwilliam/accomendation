@@ -33,6 +33,8 @@ export interface Property {
   houseRules?: string | string[];
   /** Optional: structured house rules (title + description) for home. */
   houseRulesItems?: { title: string; description: string }[];
+  /** Optional: property detail room cards (title + image number) for Property Details section. Localized per locale. */
+  propertyDetailRooms?: { title: string; imageNum: number }[];
 }
 
 export type BookingChannelType = "airbnb" | "booking.com" | "vrbo" | "contact";
@@ -78,6 +80,10 @@ export interface FooterContent {
 
 /** UI copy per locale (nav, gallery, hero labels). */
 export interface UiStrings {
+  /** Localized brand name for logo and hero (e.g. "Manna Family Hotel", "吗哪家庭旅馆"). */
+  brandName: string;
+  /** Section heading for Property Details. */
+  propertyDetailsTitle: string;
   nav: { home: string; property: string; contact: string };
   gallery: {
     title: string;

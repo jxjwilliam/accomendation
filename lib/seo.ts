@@ -16,18 +16,18 @@ const DEFAULT_OG_IMAGE_PATH = "/images/image_001.jpg";
 
 /** Default titles per locale (family hotel, Surrey, Vancouver BC). */
 const DEFAULT_TITLES: Record<Locale, string> = {
-  en: "Wonderful Family Stay | Surrey Vancouver BC",
-  fr: "Wonderful Family Stay | Surrey Vancouver BC",
-  "zh-Hans": "Wonderful Family Stay | 素里 温哥华 BC",
-  "zh-Hant": "Wonderful Family Stay | 素里 溫哥華 BC",
+  en: "Manna Family Hotel | Surrey Vancouver BC",
+  fr: "Manna Family Hotel | Surrey Vancouver BC",
+  "zh-Hans": "吗哪家庭旅馆 | 素里 温哥华 BC",
+  "zh-Hant": "Manna Family Hotel | 素里 溫哥華 BC",
 };
 
 /** Default meta descriptions per locale (comfort, fully equipped, accommodation). */
 const DEFAULT_DESCRIPTIONS: Record<Locale, string> = {
-  en: "Family hotel in Surrey, Vancouver BC, Canada. Comfortable, fully equipped accommodation. Book or contact us.",
+  en: "Manna Family Hotel in Surrey, Vancouver BC, Canada. Comfortable, fully equipped accommodation. Book or contact us.",
   fr: "Hôtel familial à Surrey, Vancouver BC, Canada. Hébergement confortable et bien équipé. Réservez ou contactez-nous.",
-  "zh-Hans": "加拿大 BC 省温哥华素里家庭旅馆，住宿舒适、功能齐全。预订或联系我们。",
-  "zh-Hant": "加拿大 BC 省溫哥華素里家庭旅館，住宿舒適、功能齊全。預訂或聯絡我們。",
+  "zh-Hans": "加拿大 BC 省温哥华素里吗哪家庭旅馆，住宿舒适、功能齐全。预订或联系我们。",
+  "zh-Hant": "加拿大 BC 省溫哥華素里嗎哪家庭旅館，住宿舒適、功能齊全。預訂或聯絡我們。",
 };
 
 /** Per-page overrides: path segment -> { title?, description? } (locale-agnostic keys). */
@@ -101,7 +101,7 @@ export function getBusiness(locale?: Locale): LodgingBusinessData {
   const data: LodgingBusinessData = {
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
-    name: "Wonderful Family Stay Surrey",
+    name: "Manna Family Hotel Surrey",
     description: desc,
     url: baseUrl,
     address: {

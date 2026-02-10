@@ -6,6 +6,7 @@
 
 import type { Locale } from "@/lib/i18n";
 import type { BookingChannelsContent, PropertyContent, FooterContent, FooterLink, UiStrings } from "@/lib/types";
+import { AIRBNB_BOOKING_URL } from "@/lib/contact";
 
 const propertyByLocale: Record<Locale, () => Promise<{ default: PropertyContent }>> = {
   en: () => import("@/content/property.en.json").then((m) => m as { default: PropertyContent }),
@@ -75,7 +76,7 @@ const faqByLocale: Record<Locale, { title: string; items: { q: string; a: string
   en: {
     title: "Frequently asked questions",
     items: [
-      { q: "What are check-in and check-out times?", a: "Check-in after 3 PM, check-out by 11 AM." },
+      { q: "What are check-in and check-out times?", a: "Check-in after 4 PM, check-out by 10 AM." },
       { q: "Is cancellation free?", a: "Free cancellation up to 24 hours before check-in." },
       { q: "Is there parking?", a: "Yes, free parking is available." },
     ],
@@ -91,7 +92,7 @@ const faqByLocale: Record<Locale, { title: string; items: { q: string; a: string
   "zh-Hans": {
     title: "常见问题",
     items: [
-      { q: "入住和退房时间？", a: "下午3点后入住，上午11点前退房。" },
+      { q: "入住和退房时间？", a: "下午4点后入住，上午10点前退房。" },
       { q: "可以免费取消吗？", a: "入住前24小时可免费取消。" },
       { q: "有停车位吗？", a: "有，提供免费停车。" },
     ],
@@ -99,7 +100,7 @@ const faqByLocale: Record<Locale, { title: string; items: { q: string; a: string
   "zh-Hant": {
     title: "常見問題",
     items: [
-      { q: "入住和退房時間？", a: "下午3點後入住，上午11點前退房。" },
+      { q: "入住和退房時間？", a: "下午4點後入住，上午10點前退房。" },
       { q: "可以免費取消嗎？", a: "入住前24小時可免費取消。" },
       { q: "有停車位嗎？", a: "有，提供免費停車。" },
     ],
@@ -118,7 +119,7 @@ export async function getFooterContent(locale: Locale): Promise<FooterContent> {
     `${property.location.city}, ${property.location.region}, ${property.location.country}`;
   const links: FooterLink[] = [
     { label: labels.gallery, href: `/${locale}/gallery` },
-    { label: labels.book, href: `/${locale}#contact` },
+    { label: labels.book, href: AIRBNB_BOOKING_URL, external: true },
   ];
   const modalLinks: FooterContent["modalLinks"] = [
     { label: labels.policies, modalId: "policies" },

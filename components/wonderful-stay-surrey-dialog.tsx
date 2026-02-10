@@ -20,7 +20,7 @@ interface WonderfulStaySurreyDialogProps {
 }
 
 /**
- * Dialog that shows the "Wonderful Family Stay Surrey" content:
+ * Dialog that shows the "Manna Family Hotel Surrey" content:
  * property name, tagline, type, address, booking links, and calendar card.
  * Trigger is rendered by the parent; open state is controlled via render props or internal state.
  */

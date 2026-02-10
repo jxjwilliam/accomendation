@@ -23,8 +23,8 @@ import type { BookingChannel } from "@/lib/types";
 import type { UiStrings } from "@/lib/types";
 import { BookingLinks } from "@/components/booking-links";
 import { GoogleMap } from "@/components/google-map";
-import { BookingForm } from "@/components/booking-form";
 import { BookingCalendarCard } from "@/components/booking-calendar-card";
+import { AIRBNB_BOOKING_URL } from "@/lib/contact";
 import { ScrollSpyUpdater } from "@/components/scroll-spy-updater";
 import { WonderfulStaySurreyDialog } from "@/components/wonderful-stay-surrey-dialog";
 import { GetInTouchForm } from "@/components/get-in-touch-form";
@@ -204,11 +204,11 @@ export function HomeSectionsVanhomestay({
         id="property-details"
         data-scroll-section
         className="section-padding bg-white scroll-mt-20"
-        aria-label="Property details"
+        aria-label={uiStrings.propertyDetailsTitle}
       >
         <div className="container mx-auto px-4 md:px-6">
           <div className="mb-12 text-center">
-            <h2 className="section-title text-primary">Property Details</h2>
+            <h2 className="section-title text-primary">{uiStrings.propertyDetailsTitle}</h2>
             <div className="section-title-underline mt-2" aria-hidden />
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
               {property.description}
@@ -216,11 +216,11 @@ export function HomeSectionsVanhomestay({
           </div>
 
           <div className="mb-12 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-            {PROPERTY_DETAIL_ROOMS.map((room) => {
+            {(property.propertyDetailRooms ?? PROPERTY_DETAIL_ROOMS).map((room) => {
               const src = getPropertyDetailImagePath(room.imageNum);
               return (
                 <div
-                  key={room.title}
+                  key={room.imageNum}
                   className="card-hover overflow-hidden rounded-xl border border-border bg-white shadow-lg transition-transform duration-300 hover:shadow-xl"
                 >
                   <div className="relative aspect-4/3 w-full overflow-hidden bg-muted">
@@ -334,12 +334,12 @@ export function HomeSectionsVanhomestay({
         </div>
       </section>
 
-      {/* Contact / Book */}
+      {/* Book Your Stay - CTA to Airbnb (form hidden) */}
       <section
         id="contact"
         data-scroll-section
         className="section-padding bg-white scroll-mt-20"
-        aria-label="Contact and booking"
+        aria-label="Book your stay"
       >
         <div className="container mx-auto px-4 md:px-6">
           <div className="mb-12 text-center">
@@ -355,15 +355,18 @@ export function HomeSectionsVanhomestay({
             <h2 className="section-title text-primary">Book Your Stay</h2>
             <div className="section-title-underline mt-2" aria-hidden />
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              Enter your details and dates below, then click Complete Booking. We&apos;ll confirm your request shortly.
+              Book your stay on Airbnb.
             </p>
           </div>
-          <div className="mx-auto max-w-2xl rounded-xl border border-border bg-white p-6 shadow-sm md:p-8">
-            <BookingForm />
-            <div className="mt-8 border-t border-border pt-6">
-              <p className="mb-2 text-sm font-medium text-foreground">Or book via</p>
-              <BookingLinks channels={channels} />
-            </div>
+          <div className="mx-auto max-w-2xl text-center">
+            <a
+              href={AIRBNB_BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-14 items-center justify-center rounded-md bg-primary px-8 py-6 text-lg font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {uiStrings.hero.ctaLabel}
+            </a>
           </div>
         </div>
       </section>
@@ -423,11 +426,11 @@ export function HomeSectionsVanhomestay({
                   {CONTACT.email}
                 </a>
               </div>
-              <GoogleMap
-                address={mapAddress}
-                className="mt-4 rounded-xl overflow-hidden border border-border shadow-lg"
-                title="Wonderful Family Stay location map"
-              />
+          <GoogleMap
+            address={mapAddress}
+            className="mt-4 rounded-xl overflow-hidden border border-border shadow-lg"
+            title="Manna Family Hotel location map"
+          />
             </div>
 
             {/* Simple contact form (distinct from booking form) */}

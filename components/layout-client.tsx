@@ -20,6 +20,7 @@ export function LayoutClient({ locale, uiStrings, children }: LayoutClientProps)
     <>
       <Header
         currentLocale={locale}
+        brandName={uiStrings.brandName}
         navLabels={uiStrings.nav}
         activeSection={activeSection}
       />

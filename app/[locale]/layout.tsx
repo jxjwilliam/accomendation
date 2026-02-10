@@ -36,9 +36,9 @@ export async function generateMetadata({
       title,
       description,
       url: baseUrl,
-      siteName: "Wonderful Family Stay Surrey",
+      siteName: "Manna Family Hotel Surrey",
       locale: locale,
-      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: "Wonderful Family Stay Surrey" }],
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: "Manna Family Hotel Surrey" }],
     },
     twitter: {
       card: "summary_large_image",
