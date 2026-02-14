@@ -50,19 +50,35 @@ export async function getBookingChannels(locale: Locale): Promise<BookingChannel
   return data.channels;
 }
 
+/** Deep merge: fill missing keys in target from source (one level for nested objects). */
+function mergeUiStrings(target: Partial<UiStrings>, source: UiStrings): UiStrings {
+  const merged = { ...source };
+  for (const key of Object.keys(source) as (keyof UiStrings)[]) {
+    const t = target[key as keyof UiStrings];
+    const s = source[key as keyof UiStrings];
+    if (t != null && typeof t === "object" && !Array.isArray(t) && s != null && typeof s === "object") {
+      (merged as Record<string, unknown>)[key] = { ...s, ...t };
+    } else if (t != null) {
+      (merged as Record<string, unknown>)[key] = t;
+    }
+  }
+  return merged;
+}
+
 /**
- * Get UI strings for the given locale. Falls back to English if locale or keys are missing.
+ * Get UI strings for the given locale. Falls back to English for missing keys (Option B).
  */
 export async function getUiStrings(locale: Locale): Promise<UiStrings> {
+  const enMod = await uiStringsByLocale.en();
+  const en = enMod.default;
   const loader = uiStringsByLocale[locale] ?? uiStringsByLocale.en;
   try {
     const mod = await loader();
-    if (mod?.default) return mod.default;
+    if (mod?.default) return mergeUiStrings(mod.default, en);
   } catch {
     // fallback to en
   }
-  const mod = await uiStringsByLocale.en();
-  return mod.default;
+  return en;
 }
 
 const footerLinkLabels: Record<Locale, { property: string; gallery: string; policies: string; faq: string; book: string }> = {
@@ -108,8 +124,15 @@ const faqByLocale: Record<Locale, { title: string; items: { q: string; a: string
 };
 
 /**
+ * Get FAQ content for the given locale (used by House Rules section).
+ */
+export function getFaqContent(locale: Locale): { title: string; items: { q: string; a: string }[] } {
+  return faqByLocale[locale] ?? faqByLocale.en;
+}
+
+/**
  * Get footer content derived from property (name, address), links, and modal content.
- * Policies and FAQ open in modals; Book links to #contact.
+ * Policies open in modal; FAQ merged into House Rules section; Book links to #contact.
  */
 export async function getFooterContent(locale: Locale): Promise<FooterContent> {
   const property = await getProperty(locale);
@@ -121,10 +144,13 @@ export async function getFooterContent(locale: Locale): Promise<FooterContent> {
     { label: labels.gallery, href: `/${locale}/gallery` },
     { label: labels.book, href: AIRBNB_BOOKING_URL, external: true },
   ];
-  const modalLinks: FooterContent["modalLinks"] = [
-    { label: labels.policies, modalId: "policies" },
-    { label: labels.faq, modalId: "faq" },
-  ];
+  const faq = faqByLocale[locale] ?? faqByLocale.en;
+  const modalLinks: FooterContent["modalLinks"] =
+    faq.items?.length && property.policies
+      ? [] // Policies redundant with FAQ (check-in/cancellation covered in Q&A)
+      : property.policies
+        ? [{ label: labels.policies, modalId: "policies" }]
+        : [];
   return {
     businessName: property.name,
     addressLine,

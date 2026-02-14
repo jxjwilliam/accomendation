@@ -6,17 +6,21 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BookingLinks } from "@/components/booking-links";
 import { BookingCalendarCard } from "@/components/booking-calendar-card";
 import type { Property } from "@/lib/types";
 import type { BookingChannel } from "@/lib/types";
+import type { UiStrings } from "@/lib/types";
 
 interface WonderfulStaySurreyDialogProps {
   property: Property;
   channels: BookingChannel[];
   triggerLabel: string;
+  uiStrings: UiStrings;
 }
 
 /**
@@ -28,6 +32,7 @@ export function WonderfulStaySurreyDialog({
   property,
   channels,
   triggerLabel,
+  uiStrings,
 }: WonderfulStaySurreyDialogProps) {
   const [open, setOpen] = useState(false);
 
@@ -46,12 +51,23 @@ export function WonderfulStaySurreyDialog({
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-2xl">{property.name}</DialogTitle>
-          </DialogHeader>
+          <div className="flex items-start justify-between gap-4">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">{property.name}</DialogTitle>
+            </DialogHeader>
+            <DialogClose asChild>
+              <button
+                type="button"
+                className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label="Close"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </DialogClose>
+          </div>
           <div className="space-y-6">
             <p className="text-sm text-muted-foreground">
-              Our property — your home away from home in Surrey, BC.
+              {uiStrings.modals.propertyTagline}
             </p>
             <p className="text-lg leading-relaxed text-muted-foreground">
               {property.typeOfAccommodation}
@@ -61,11 +77,11 @@ export function WonderfulStaySurreyDialog({
                 `${property.location.city}, ${property.location.region}, ${property.location.country}`}
             </p>
 
-            <section aria-label="Booking and contact">
+            <section aria-label={uiStrings.modals.bookingAndContact}>
               <BookingLinks channels={channels} />
             </section>
             <div>
-              <BookingCalendarCard />
+              <BookingCalendarCard uiStrings={uiStrings} />
             </div>
           </div>
         </DialogContent>

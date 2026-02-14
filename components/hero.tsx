@@ -101,7 +101,7 @@ export function Hero({ title, subtitle, images, ctaLabel, locale = "en" }: HeroP
           <button
             type="button"
             onClick={prev}
-            className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 text-white transition-colors hover:bg-white/40 focus-visible:outline focus-visible:ring-2 focus-visible:ring-white"
+            className="absolute left-2 top-1/2 z-10 flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/40 focus-visible:outline focus-visible:ring-2 focus-visible:ring-white"
             aria-label="Previous slide"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -109,7 +109,7 @@ export function Hero({ title, subtitle, images, ctaLabel, locale = "en" }: HeroP
           <button
             type="button"
             onClick={next}
-            className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 text-white transition-colors hover:bg-white/40 focus-visible:outline focus-visible:ring-2 focus-visible:ring-white"
+            className="absolute right-2 top-1/2 z-10 flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/40 focus-visible:outline focus-visible:ring-2 focus-visible:ring-white"
             aria-label="Next slide"
           >
             <ChevronRight className="h-6 w-6" />
@@ -127,10 +127,15 @@ export function Hero({ title, subtitle, images, ctaLabel, locale = "en" }: HeroP
                 aria-selected={index === currentSlide}
                 aria-label={`Slide ${index + 1}`}
                 onClick={() => goTo(index)}
-                className={`h-2 rounded-full transition-all ${
-                  index === currentSlide ? "w-8 bg-white" : "w-2 bg-white/50"
-                }`}
-              />
+                className="flex min-h-11 min-w-11 items-center justify-center rounded-full transition-all"
+              >
+                <span
+                  className={`block rounded-full transition-all ${
+                    index === currentSlide ? "h-2 w-8 bg-white" : "h-2 w-2 bg-white/50"
+                  }`}
+                  aria-hidden
+                />
+              </button>
             ))}
           </div>
         </>

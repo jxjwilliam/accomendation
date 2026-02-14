@@ -68,7 +68,7 @@ export default async function LocaleLayout({
         <LayoutClient locale={locale} uiStrings={uiStrings}>
           {children}
         </LayoutClient>
-        <Footer locale={locale} />
+        <Footer locale={locale} uiStrings={uiStrings} />
       </ScrollSpyProvider>
     </div>
   );

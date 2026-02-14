@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import type { UiStrings } from "@/lib/types";
+
+interface GetInTouchFormProps {
+  uiStrings: UiStrings;
+}
 
 /**
  * Simple "Get in Touch" contact form (name, email, message). Distinct from the booking form.
  * Submit opens mailto with the message; optional success state.
  */
-export function GetInTouchForm() {
+export function GetInTouchForm({ uiStrings }: GetInTouchFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -31,9 +36,9 @@ export function GetInTouchForm() {
   if (submitted) {
     return (
       <div className="rounded-xl border border-border bg-muted/30 p-6 text-center">
-        <p className="font-medium text-foreground">Message sent</p>
+        <p className="font-medium text-foreground">{uiStrings.forms.messageSent}</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          Your email client should open. If not, you can email us directly.
+          {uiStrings.forms.messageSentHint}
         </p>
       </div>
     );
@@ -43,7 +48,7 @@ export function GetInTouchForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="getintouch-name" className="mb-1 block text-sm font-medium text-foreground">
-          Name
+          {uiStrings.forms.name}
         </label>
         <input
           id="getintouch-name"
@@ -51,12 +56,12 @@ export function GetInTouchForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          placeholder="Your name"
+          placeholder={uiStrings.forms.yourName}
         />
       </div>
       <div>
         <label htmlFor="getintouch-email" className="mb-1 block text-sm font-medium text-foreground">
-          Email
+          {uiStrings.forms.email}
         </label>
         <input
           id="getintouch-email"
@@ -64,12 +69,12 @@ export function GetInTouchForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          placeholder="your@email.com"
+          placeholder={uiStrings.forms.yourEmail}
         />
       </div>
       <div>
         <label htmlFor="getintouch-message" className="mb-1 block text-sm font-medium text-foreground">
-          Message
+          {uiStrings.forms.message}
         </label>
         <textarea
           id="getintouch-message"
@@ -77,11 +82,11 @@ export function GetInTouchForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          placeholder="Your message..."
+          placeholder={uiStrings.forms.yourMessage}
         />
       </div>
       <Button type="submit" className="w-full sm:w-auto">
-        Send Message
+        {uiStrings.forms.sendMessage}
       </Button>
     </form>
   );

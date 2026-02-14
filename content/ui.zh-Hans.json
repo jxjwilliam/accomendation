@@ -1,1 +1,11 @@
-{"brandName":"吗哪家庭旅馆","propertyDetailsTitle":"房源详情","nav":{"property":"房源","contact":"联系","home":"首页"},"gallery":{"title":"相册","subtitle":"房源照片","viewAllPhotos":"查看全部照片 →","backToHome":"← 返回首页","viewGrid":"网格","viewMasonry":"瀑布流","viewList":"列表"},"hero":{"ctaLabel":"立即预订"}}
+{
+  "brandName": "吗哪家庭旅馆",
+  "propertyDetailsTitle": "房源详情",
+  "nav": {"property": "房源", "contact": "联系", "home": "首页"},
+  "gallery": {"title": "相册", "subtitle": "房源照片", "viewAllPhotos": "查看全部照片 →", "backToHome": "← 返回首页", "viewGrid": "网格", "viewMasonry": "瀑布流", "viewList": "列表"},
+  "hero": {"ctaLabel": "立即预订"},
+  "sections": {"whyChooseUs": "为什么选择我们", "amenities": "配套设施", "houseRules": "入住须知", "bookYourStay": "立即预订", "bookYourStaySubtitle": "通过 Airbnb 预订您的住宿。", "getInTouch": "联系我们", "sendMessage": "发送消息", "address": "地址", "phone": "电话", "email": "邮箱", "viewFullPolicies": "查看完整政策"},
+  "forms": {"name": "姓名", "email": "邮箱", "message": "留言", "sendMessage": "发送消息", "yourName": "您的姓名", "yourEmail": "your@email.com", "yourMessage": "请输入留言...", "messageSent": "消息已发送", "messageSentHint": "您的邮箱客户端将打开。如未打开，可直接给我们发邮件。"},
+  "booking": {"checkAvailability": "查看可用日期", "selectDates": "选择入住日期。价格以加元计。温哥华素里。", "clearDates": "清除日期", "bookViaOtas": "通过 Airbnb、Booking.com 或 VRBO 预订 — 见下方链接。", "reserved": "已预订"},
+  "modals": {"policies": "政策", "checkInOut": "入住与退房", "cancellation": "取消政策", "noPolicies": "暂无政策信息。", "propertyTagline": "我们的房源 — 您在素里 BC 的家外之家。", "bookingAndContact": "预订与联系"}
+}

@@ -78,7 +78,7 @@ export interface FooterContent {
   faqContent?: { title: string; items: { q: string; a: string }[] };
 }
 
-/** UI copy per locale (nav, gallery, hero labels). */
+/** UI copy per locale (nav, gallery, hero, sections, forms, modals). */
 export interface UiStrings {
   /** Localized brand name for logo and hero (e.g. "Manna Family Hotel", "吗哪家庭旅馆"). */
   brandName: string;
@@ -95,4 +95,47 @@ export interface UiStrings {
     viewList: string;
   };
   hero: { ctaLabel: string };
+  /** Section headings and labels. */
+  sections: {
+    whyChooseUs: string;
+    amenities: string;
+    houseRules: string;
+    bookYourStay: string;
+    bookYourStaySubtitle: string;
+    getInTouch: string;
+    sendMessage: string;
+    address: string;
+    phone: string;
+    email: string;
+    viewFullPolicies: string;
+  };
+  /** Form labels and placeholders. */
+  forms: {
+    name: string;
+    email: string;
+    message: string;
+    sendMessage: string;
+    yourName: string;
+    yourEmail: string;
+    yourMessage: string;
+    messageSent: string;
+    messageSentHint: string;
+  };
+  /** Booking calendar strings. */
+  booking: {
+    checkAvailability: string;
+    selectDates: string;
+    clearDates: string;
+    bookViaOtas: string;
+    reserved: string;
+  };
+  /** Modal titles and labels. */
+  modals: {
+    policies: string;
+    checkInOut: string;
+    cancellation: string;
+    noPolicies: string;
+    propertyTagline: string;
+    bookingAndContact: string;
+  };
 }

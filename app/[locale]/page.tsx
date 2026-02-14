@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { Locale } from "@/lib/i18n";
-import { getProperty, getBookingChannels, getUiStrings } from "@/lib/content";
+import { getProperty, getBookingChannels, getUiStrings, getFaqContent } from "@/lib/content";
 import { getDefaultTitle, getDefaultDescription, getBaseUrl } from "@/lib/seo";
 import { HERO_IMAGE_PATHS } from "@/lib/gallery-images";
 import { Hero } from "@/components/hero";
@@ -25,10 +25,11 @@ export async function generateMetadata({ params }: HomePageProps): Promise<Metad
 
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = (await params) as { locale: Locale };
-  const [property, channels, uiStrings] = await Promise.all([
+  const [property, channels, uiStrings, faqContent] = await Promise.all([
     getProperty(locale),
     getBookingChannels(locale),
     getUiStrings(locale),
+    Promise.resolve(getFaqContent(locale)),
   ]);
   const locationText = `${property.location.city}, ${property.location.region}, ${property.location.country}`;
   const mapAddress = property.location.addressLine ?? locationText;
@@ -43,7 +44,7 @@ export default async function HomePage({ params }: HomePageProps) {
         ctaLabel={uiStrings.hero.ctaLabel}
         locale={locale}
       />
-      <div className="mx-auto w-full px-4 py-6 sm:px-6 sm:py-8">
+      <div className="w-full py-6 sm:py-8">
         <HomeSectionsVanhomestay
           locale={locale}
           property={property}
@@ -51,6 +52,7 @@ export default async function HomePage({ params }: HomePageProps) {
           uiStrings={uiStrings}
           mapAddress={mapAddress}
           locationText={locationText}
+          faqContent={faqContent}
         />
       </div>
     </>

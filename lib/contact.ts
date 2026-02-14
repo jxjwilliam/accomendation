@@ -7,5 +7,5 @@ export const CONTACT = {
   email: "dongmeiliu8@yahoo.ca",
 } as const;
 
-/** Book on Airbnb (hosting listings). Used for "Book Your Stay" CTA and footer Book link. */
-export const AIRBNB_BOOKING_URL = "https://www.airbnb.ca/hosting/listings";
+/** Book on Airbnb. Used for "Book Your Stay" CTA and footer Book link. */
+export const AIRBNB_BOOKING_URL = "https://www.airbnb.ca/rooms/1153941473363493917";

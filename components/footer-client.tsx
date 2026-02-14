@@ -2,19 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  Images,
-  CalendarCheck,
-  FileText,
-  HelpCircle,
-} from "lucide-react";
+import { Images, CalendarCheck, FileText } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
+import { X } from "lucide-react";
 import type { FooterContent } from "@/lib/types";
+import type { UiStrings } from "@/lib/types";
+import { QrCodeBadge } from "@/components/qr-code-badge";
 
 /** Icon for a footer nav link by href. */
 function getLinkIcon(href: string) {
@@ -24,22 +23,24 @@ function getLinkIcon(href: string) {
 }
 
 /** Icon for a footer modal link by modalId. */
-function getModalLinkIcon(modalId: "policies" | "faq") {
-  if (modalId === "policies") return FileText;
-  return HelpCircle;
+function getModalLinkIcon(_modalId: "policies" | "faq") {
+  return FileText;
 }
 
 interface FooterClientProps {
   content: FooterContent;
+  siteUrl?: string;
+  uiStrings: UiStrings;
 }
 
 /**
  * Footer with optional modal links (Policies, FAQ). Renders links and modal triggers.
  */
-export function FooterClient({ content }: FooterClientProps) {
+const DEFAULT_SITE_URL = "https://manna-family-hotel.vercel.app/";
+
+export function FooterClient({ content, siteUrl = DEFAULT_SITE_URL, uiStrings }: FooterClientProps) {
   const [policiesOpen, setPoliciesOpen] = useState(false);
-  const [faqOpen, setFaqOpen] = useState(false);
-  const { businessName, addressLine, links, modalLinks, policiesContent, faqContent } = content;
+  const { businessName, addressLine, links, modalLinks, policiesContent } = content;
 
   return (
     <>
@@ -50,9 +51,17 @@ export function FooterClient({ content }: FooterClientProps) {
       >
         <div className="container mx-auto max-w-6xl px-4 md:px-6">
           <div className="flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
-            <div>
-              <p className="font-semibold text-white">{businessName}</p>
-              <p className="mt-1 text-sm text-white/80">{addressLine}</p>
+            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+              <div>
+                <p className="font-semibold text-white">{businessName}</p>
+                <p className="mt-1 text-sm text-white/80">{addressLine}</p>
+              </div>
+              <QrCodeBadge
+                value={siteUrl}
+                size={80}
+                title="Scan to visit Manna Family Hotel"
+                className="shrink-0 border-white/30 bg-white"
+              />
             </div>
             <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-4 sm:gap-6">
               {links.map(({ label, href, external }) => {
@@ -71,17 +80,17 @@ export function FooterClient({ content }: FooterClientProps) {
               })}
               {modalLinks?.map(({ label, modalId }) => {
                 const Icon = getModalLinkIcon(modalId);
-                return (
+                return modalId === "policies" ? (
                   <button
                     key={modalId}
                     type="button"
-                    onClick={() => (modalId === "policies" ? setPoliciesOpen(true) : setFaqOpen(true))}
+                    onClick={() => setPoliciesOpen(true)}
                     className="flex min-h-11 min-w-11 cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <Icon className="h-4 w-4 shrink-0" aria-hidden />
                     {label}
                   </button>
-                );
+                ) : null;
               })}
             </nav>
           </div>
@@ -90,9 +99,20 @@ export function FooterClient({ content }: FooterClientProps) {
 
       <Dialog open={policiesOpen} onOpenChange={setPoliciesOpen}>
         <DialogContent className="max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Policies</DialogTitle>
-          </DialogHeader>
+          <div className="flex items-start justify-between gap-4">
+            <DialogHeader>
+              <DialogTitle>{uiStrings.modals.policies}</DialogTitle>
+            </DialogHeader>
+            <DialogClose asChild>
+              <button
+                type="button"
+                className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label="Close"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </DialogClose>
+          </div>
           {policiesContent?.externalUrl ? (
             <a
               href={policiesContent.externalUrl}
@@ -100,42 +120,26 @@ export function FooterClient({ content }: FooterClientProps) {
               rel="noopener noreferrer"
               className="text-primary underline"
             >
-              View full policies
+              {uiStrings.sections.viewFullPolicies}
             </a>
           ) : policiesContent ? (
             <div className="space-y-4 text-sm">
               {policiesContent.checkInOut && (
                 <section>
-                  <h3 className="font-semibold">Check-in & Check-out</h3>
+                  <h3 className="font-semibold">{uiStrings.modals.checkInOut}</h3>
                   <p className="mt-1 text-muted-foreground">{policiesContent.checkInOut}</p>
                 </section>
               )}
               {policiesContent.cancellation && (
                 <section>
-                  <h3 className="font-semibold">Cancellation</h3>
+                  <h3 className="font-semibold">{uiStrings.modals.cancellation}</h3>
                   <p className="mt-1 text-muted-foreground">{policiesContent.cancellation}</p>
                 </section>
               )}
             </div>
           ) : (
-            <p className="text-muted-foreground">No policies listed.</p>
+            <p className="text-muted-foreground">{uiStrings.modals.noPolicies}</p>
           )}
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={faqOpen} onOpenChange={setFaqOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{faqContent?.title ?? "FAQ"}</DialogTitle>
-          </DialogHeader>
-          <dl className="mt-2 space-y-4">
-            {faqContent?.items.map((item, i) => (
-              <div key={i}>
-                <dt className="font-semibold text-foreground">{item.q}</dt>
-                <dd className="mt-1 text-sm text-muted-foreground">{item.a}</dd>
-              </div>
-            ))}
-          </dl>
         </DialogContent>
       </Dialog>
     </>

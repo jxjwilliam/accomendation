@@ -31,7 +31,7 @@ export function GoogleMap({ address, title = "Map", className }: GoogleMapProps)
   const src = `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${q}&zoom=${zoom}`;
 
   return (
-    <div className={cn(className, "h-[420px] min-h-[320px] w-full")}>
+    <div className={cn("h-[420px] min-h-[320px] w-full", className)}>
       <iframe
         title={title}
         src={src}

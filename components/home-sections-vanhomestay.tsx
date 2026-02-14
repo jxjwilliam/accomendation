@@ -17,6 +17,8 @@ import {
   Tv,
   Leaf,
   Waves,
+  Phone,
+  Mail,
 } from "lucide-react";
 import type { Property } from "@/lib/types";
 import type { BookingChannel } from "@/lib/types";
@@ -79,6 +81,11 @@ function getAmenityIcon(name: string) {
   return key ? AMENITY_ICONS[key] : Sparkles;
 }
 
+interface FaqContent {
+  title: string;
+  items: { q: string; a: string }[];
+}
+
 interface HomeSectionsVanhomestayProps {
   locale: string;
   property: Property;
@@ -86,6 +93,7 @@ interface HomeSectionsVanhomestayProps {
   uiStrings: UiStrings;
   mapAddress: string;
   locationText: string;
+  faqContent?: FaqContent;
 }
 
 /**
@@ -99,14 +107,39 @@ export function HomeSectionsVanhomestay({
   uiStrings,
   mapAddress,
   locationText,
+  faqContent,
 }: HomeSectionsVanhomestayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const bookIconRef = useRef<HTMLDivElement>(null);
+  const getInTouchIconRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+
+  const iconFloatRefs = [bookIconRef, getInTouchIconRef];
+  useEffect(() => {
+    if (reduceMotion) return;
+    const tweens = iconFloatRefs
+      .map((r) => r.current)
+      .filter(Boolean)
+      .map((el) =>
+        gsap.to(el, {
+          y: -6,
+          duration: 1.8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        })
+      );
+    return () => tweens.forEach((t) => t.kill());
+  }, [reduceMotion]);
 
   useEffect(() => {
     if (reduceMotion || !containerRef.current) return;
-    const sections = containerRef.current.querySelectorAll<HTMLElement>("[data-scroll-section]");
-    sections.forEach((section, i) => {
+
+    // Standard sections: fade-up on scroll
+    const sections = containerRef.current.querySelectorAll<HTMLElement>(
+      "[data-scroll-section]:not([data-converge-section])"
+    );
+    sections.forEach((section) => {
       gsap.fromTo(
         section,
         { opacity: 0, y: 30 },
@@ -124,6 +157,56 @@ export function HomeSectionsVanhomestay({
         }
       );
     });
+
+    // Convergence sections: header fades up; cards move toward center as you scroll (scroll-scrubbed)
+    const convergeSections = containerRef.current.querySelectorAll<HTMLElement>(
+      "[data-converge-section]"
+    );
+    convergeSections.forEach((section) => {
+      const content = section.querySelector<HTMLElement>("[class*='max-w-6xl']");
+      const header = content?.querySelector<HTMLElement>("> div:first-child");
+      if (header) {
+        gsap.fromTo(
+          header,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 85%",
+              end: "top 70%",
+              scrub: 1,
+            },
+          }
+        );
+      }
+      const cards = section.querySelectorAll<HTMLElement>("[data-converge-card]");
+      const cols = section.hasAttribute("data-converge-cols")
+        ? parseInt(section.getAttribute("data-converge-cols") ?? "4", 10)
+        : 4;
+      cards.forEach((card, i) => {
+        const col = i % cols;
+        const xOffset = (col - (cols - 1) / 2) * 48; // spread: -72,-24,24,72 for cols 0..3
+        gsap.fromTo(
+          card,
+          { opacity: 0, x: xOffset },
+          {
+            opacity: 1,
+            x: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 85%",
+              end: "top 25%",
+              scrub: 1,
+            },
+          }
+        );
+      });
+    });
+
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, [reduceMotion]);
 
@@ -137,18 +220,19 @@ export function HomeSectionsVanhomestay({
       ].filter(Boolean);
 
   return (
-    <div ref={containerRef} className="mx-auto w-full max-w-6xl">
+    <div ref={containerRef} className="w-full">
       <ScrollSpyUpdater />
-      {/* Why Choose Us - 4 cards with icons */}
+      {/* Why Choose Us - 4 cards with icons (scroll-scrubbed convergence) */}
       {whyItems.length > 0 && (
         <section
           data-scroll-section
-          className="section-padding bg-white"
+          data-converge-section
+          className="w-full section-padding bg-white"
           aria-label="Why choose us"
         >
-          <div className="container mx-auto px-4 md:px-6">
+          <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
             <div className="mb-12 text-center">
-              <h2 className="section-title text-primary">Why Choose Us</h2>
+              <h2 className="section-title text-primary">{uiStrings.sections.whyChooseUs}</h2>
               <div className="section-title-underline mt-2" aria-hidden />
             </div>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -157,6 +241,7 @@ export function HomeSectionsVanhomestay({
                 return (
                   <div
                     key={item}
+                    data-converge-card
                     className="card-hover rounded-xl border border-border bg-linear-to-br from-white to-orange-50/70 p-8 text-center"
                   >
                     <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -171,23 +256,25 @@ export function HomeSectionsVanhomestay({
         </section>
       )}
 
-      {/* Amenities - grid with icons */}
+      {/* Amenities - grid with icons (scroll-scrubbed convergence) */}
       <section
         data-scroll-section
-        className="section-padding bg-linear-to-br from-orange-50/50 to-white"
+        data-converge-section
+        className="w-full section-padding bg-linear-to-br from-orange-50/50 to-white"
         aria-label="Amenities"
       >
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
           <div className="mb-12 text-center">
-            <h2 className="section-title text-primary">Amenities</h2>
+            <h2 className="section-title text-primary">{uiStrings.sections.amenities}</h2>
             <div className="section-title-underline mt-2" aria-hidden />
           </div>
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-            {property.amenities.map((name) => {
+            {property.amenities.map((name, i) => {
               const Icon = getAmenityIcon(name);
               return (
                 <div
                   key={name}
+                  data-converge-card
                   className="card-hover flex flex-col items-center justify-center rounded-xl border border-border bg-white p-6 transition-all hover:border-primary"
                 >
                   <Icon className="mb-3 h-10 w-10 text-primary" />
@@ -203,10 +290,10 @@ export function HomeSectionsVanhomestay({
       <section
         id="property-details"
         data-scroll-section
-        className="section-padding bg-white scroll-mt-20"
+        className="w-full section-padding bg-white scroll-mt-20"
         aria-label={uiStrings.propertyDetailsTitle}
       >
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
           <div className="mb-12 text-center">
             <h2 className="section-title text-primary">{uiStrings.propertyDetailsTitle}</h2>
             <div className="section-title-underline mt-2" aria-hidden />
@@ -240,8 +327,8 @@ export function HomeSectionsVanhomestay({
             })}
           </div>
 
-          {/* House Rules panel - structured rules (vanhomestay reference) */}
-          {(property.houseRulesItems?.length || property.houseRules || property.policies) && (
+          {/* House Rules panel - structured rules + FAQ (vanhomestay reference) */}
+          {(property.houseRulesItems?.length || property.houseRules || property.policies || faqContent?.items?.length) && (
             <div className="rounded-2xl border border-border bg-linear-to-br from-orange-50/70 to-white p-8">
               <div className="mb-6 flex flex-wrap items-center gap-4">
                 <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border bg-muted">
@@ -253,7 +340,7 @@ export function HomeSectionsVanhomestay({
                     sizes="56px"
                   />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground">House Rules</h3>
+                <h3 className="text-2xl font-bold text-foreground">{uiStrings.sections.houseRules}</h3>
               </div>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 {property.houseRulesItems?.length
@@ -276,7 +363,7 @@ export function HomeSectionsVanhomestay({
                             <div className="h-2 w-2 rounded-full bg-primary" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-foreground">Check-in & Check-out</h4>
+                            <h4 className="font-semibold text-foreground">{uiStrings.modals.checkInOut}</h4>
                             <p className="text-sm text-muted-foreground">
                               {property.policies.checkInOut}
                             </p>
@@ -289,7 +376,7 @@ export function HomeSectionsVanhomestay({
                             <div className="h-2 w-2 rounded-full bg-primary" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-foreground">Cancellation</h4>
+                            <h4 className="font-semibold text-foreground">{uiStrings.modals.cancellation}</h4>
                             <p className="text-sm text-muted-foreground">
                               {property.policies.cancellation}
                             </p>
@@ -324,38 +411,57 @@ export function HomeSectionsVanhomestay({
                       rel="noopener noreferrer"
                       className="text-primary font-medium underline underline-offset-4 hover:no-underline"
                     >
-                      View full policies
+                      {uiStrings.sections.viewFullPolicies}
                     </a>
                   </div>
                 )}
               </div>
+
+              {faqContent?.items?.length ? (
+                <div className="mt-8 pt-8 border-t border-border">
+                  <h4 className="mb-4 text-lg font-semibold text-foreground">{faqContent.title}</h4>
+                  <dl className="space-y-3">
+                    {faqContent.items.map((item, i) => (
+                      <div key={i}>
+                        <dt className="font-medium text-foreground">{item.q}</dt>
+                        <dd className="mt-1 text-sm text-muted-foreground">{item.a}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              ) : null}
             </div>
           )}
         </div>
       </section>
 
-      {/* Book Your Stay - CTA to Airbnb (form hidden) */}
+      {/* Book Your Stay - CTA to Airbnb (icon inline with title, GSAP float) */}
       <section
         id="contact"
         data-scroll-section
-        className="section-padding bg-white scroll-mt-20"
+        className="w-full section-padding bg-white scroll-mt-20"
         aria-label="Book your stay"
       >
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
           <div className="mb-12 text-center">
-            <div className="relative mx-auto mb-4 h-16 w-16 overflow-hidden rounded-xl border border-border bg-muted">
-              <Image
-                src={SECTION_ICON_BOOK}
-                alt=""
-                fill
-                className="object-cover"
-                sizes="64px"
-              />
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <div
+                ref={bookIconRef}
+                className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border bg-muted"
+              >
+                <Image
+                  src={SECTION_ICON_BOOK}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="56px"
+                />
+              </div>
+              <h2 className="section-title text-primary">{uiStrings.sections.bookYourStay}</h2>
+              <div className="section-title-underline mt-2 w-full basis-full" aria-hidden />
             </div>
-            <h2 className="section-title text-primary">Book Your Stay</h2>
-            <div className="section-title-underline mt-2" aria-hidden />
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              Book your stay on Airbnb.
+              {uiStrings.sections.bookYourStaySubtitle}
             </p>
           </div>
           <div className="mx-auto max-w-2xl text-center">
@@ -371,86 +477,105 @@ export function HomeSectionsVanhomestay({
         </div>
       </section>
 
-      {/* Get in Touch - address, phone, email, map, and simple contact form (vanhomestay reference) */}
+      {/* Get in Touch - map (larger) + contact info & form (convergence, icon inline) */}
       <section
         id="get-in-touch"
         data-scroll-section
-        className="section-padding bg-white scroll-mt-20"
-        aria-label="Get in Touch"
+        data-converge-section
+        data-converge-cols="2"
+        className="w-full section-padding bg-white scroll-mt-20"
+        aria-label={uiStrings.sections.getInTouch}
       >
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mb-10 text-center">
-            <div className="relative mx-auto mb-4 h-16 w-16 overflow-hidden rounded-xl border border-border bg-muted">
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
+          <div className="mb-10 flex flex-wrap items-center gap-4">
+            <div
+              ref={getInTouchIconRef}
+              className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border bg-muted"
+            >
               <Image
                 src={SECTION_ICON_GET_IN_TOUCH}
                 alt=""
                 fill
                 className="object-cover"
-                sizes="64px"
+                sizes="56px"
               />
             </div>
-            <h2 className="section-title text-primary">Get in Touch</h2>
-            <div className="section-title-underline mt-2" aria-hidden />
+            <h2 className="section-title text-primary">{uiStrings.sections.getInTouch}</h2>
+            <div className="section-title-underline mt-2 w-full basis-full" aria-hidden />
           </div>
 
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-            {/* Contact info + map */}
-            <div className="space-y-6">
-              <div>
-                <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                  Address
-                </h3>
-                <p className="text-foreground">
-                  {property.location.addressLine ?? locationText}
-                </p>
-              </div>
-              <div>
-                <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                  Phone
-                </h3>
-                <a
-                  href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
-                  className="text-foreground underline-offset-4 hover:text-primary hover:underline"
-                >
-                  {CONTACT.phone}
-                </a>
-              </div>
-              <div>
-                <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                  Email
-                </h3>
-                <a
-                  href={`mailto:${CONTACT.email}`}
-                  className="text-foreground underline-offset-4 hover:text-primary hover:underline"
-                >
-                  {CONTACT.email}
-                </a>
-              </div>
-          <GoogleMap
-            address={mapAddress}
-            className="mt-4 rounded-xl overflow-hidden border border-border shadow-lg"
-            title="Manna Family Hotel location map"
-          />
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
+            {/* Left: Map (larger) */}
+            <div data-converge-card className="order-2 lg:order-1">
+              <GoogleMap
+                address={mapAddress}
+                className="h-[380px] min-h-[300px] w-full sm:h-[440px] lg:h-[520px] rounded-xl overflow-hidden border border-border shadow-lg"
+                title="Manna Family Hotel location map"
+              />
             </div>
 
-            {/* Simple contact form (distinct from booking form) */}
-            <div className="rounded-xl border border-border bg-linear-to-br from-orange-50/30 to-white p-6 md:p-8">
-              <h3 className="mb-4 text-lg font-semibold text-foreground">Send Message</h3>
-              <GetInTouchForm />
+            {/* Right: Contact info + form (same side) */}
+            <div data-converge-card className="order-1 flex flex-col gap-6 lg:order-2">
+              <div className="space-y-4">
+                <div className="flex gap-3">
+                  <MapPin className="h-5 w-5 shrink-0 text-primary" aria-hidden />
+                  <div>
+                    <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                      {uiStrings.sections.address}
+                    </h3>
+                    <p className="text-foreground">
+                      {property.location.addressLine ?? locationText}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <Phone className="h-5 w-5 shrink-0 text-primary" aria-hidden />
+                  <div>
+                    <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                      {uiStrings.sections.phone}
+                    </h3>
+                    <a
+                      href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
+                      className="inline-flex min-h-11 items-center text-foreground underline-offset-4 hover:text-primary hover:underline"
+                    >
+                      {CONTACT.phone}
+                    </a>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <Mail className="h-5 w-5 shrink-0 text-primary" aria-hidden />
+                  <div>
+                    <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                      {uiStrings.sections.email}
+                    </h3>
+                    <a
+                      href={`mailto:${CONTACT.email}`}
+                      className="inline-flex min-h-11 items-center text-foreground underline-offset-4 hover:text-primary hover:underline"
+                    >
+                      {CONTACT.email}
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-xl border border-border bg-linear-to-br from-orange-50/30 to-white p-6 md:p-8">
+                <h3 className="mb-4 text-lg font-semibold text-foreground">{uiStrings.sections.sendMessage}</h3>
+                <GetInTouchForm uiStrings={uiStrings} />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer-style description block */}
-      <section data-scroll-section className="section-padding bg-muted/30">
-        <div className="container mx-auto max-w-[75ch] px-4 md:px-6">
+      <section data-scroll-section className="w-full section-padding bg-muted/30">
+        <div className="mx-auto w-full max-w-[75ch] px-4 md:px-6">
           <p className="text-base leading-relaxed text-foreground">{property.description}</p>
           <div className="mt-8 flex justify-center">
             <WonderfulStaySurreyDialog
               property={property}
               channels={channels}
               triggerLabel={`About ${property.name}`}
+              uiStrings={uiStrings}
             />
           </div>
         </div>

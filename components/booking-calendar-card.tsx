@@ -12,12 +12,17 @@ import {
 } from "@/components/ui/tooltip";
 import { getUnavailableDates } from "@/lib/unavailable-dates";
 import type { DateRange } from "react-day-picker";
+import type { UiStrings } from "@/lib/types";
+
+interface BookingCalendarCardProps {
+  uiStrings: UiStrings;
+}
 
 /**
  * Booking Calendar Card: glassmorphism, date-range picker, "Reserved" tooltip on unavailable dates.
  * Framer Motion entrance (y 20px, 0.4s); CAD; mobile-optimized. Vancouver/Surrey BC context.
  */
-export function BookingCalendarCard() {
+export function BookingCalendarCard({ uiStrings }: BookingCalendarCardProps) {
   const [range, setRange] = useState<DateRange | undefined>(undefined);
   const [unavailableSet, setUnavailableSet] = useState<Set<number>>(new Set());
   const reducedMotion = useReducedMotion();
@@ -42,7 +47,7 @@ export function BookingCalendarCard() {
         return (
           <Tooltip>
             <TooltipTrigger asChild>{button}</TooltipTrigger>
-            <TooltipContent>Reserved</TooltipContent>
+            <TooltipContent>{uiStrings.booking.reserved}</TooltipContent>
           </Tooltip>
         );
       }
@@ -59,10 +64,10 @@ export function BookingCalendarCard() {
         className="rounded-xl border border-white/60 bg-white/80 p-4 shadow-lg backdrop-blur-md sm:p-6"
       >
         <h2 className="text-lg font-semibold leading-tight text-foreground">
-          Check availability
+          {uiStrings.booking.checkAvailability}
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Select your dates. Prices in CAD. Surrey, Vancouver BC.
+          {uiStrings.booking.selectDates}
         </p>
         <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
           <Calendar
@@ -78,10 +83,10 @@ export function BookingCalendarCard() {
               className="min-h-11 cursor-pointer"
               onClick={() => setRange(undefined)}
             >
-              Clear dates
+              {uiStrings.booking.clearDates}
             </Button>
             <p className="text-xs text-muted-foreground">
-              Book via Airbnb, Booking.com or VRBO — see links below.
+              {uiStrings.booking.bookViaOtas}
             </p>
           </div>
         </div>
