@@ -3,13 +3,25 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Bed, Bath, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+export interface HeroRoomOptions {
+  lead?: string;
+  headline?: string;
+  configs?: string[];
+  suffix?: string;
+}
+
 export interface HeroProps {
   /** Main headline (e.g. property name). */
   title: string;
   /** Subtitle or tagline (e.g. type of accommodation). */
   subtitle: string;
+  /** Optional room options line (fallback when structured options not provided). */
+  roomOptions?: string;
+  /** Structured room options for enhanced display (icons, animation, badges). */
+  roomOptionsStructured?: HeroRoomOptions;
   /** Image URLs for the carousel (e.g. from public/images). */
   images: string[];
   /** CTA label (e.g. "Book Now"). */
@@ -22,7 +34,15 @@ export interface HeroProps {
  * Full-viewport hero with image carousel and overlay text.
  * Respects prefers-reduced-motion (no auto-advance or minimal motion).
  */
-export function Hero({ title, subtitle, images, ctaLabel, locale = "en" }: HeroProps) {
+export function Hero({
+  title,
+  subtitle,
+  roomOptions,
+  roomOptionsStructured,
+  images,
+  ctaLabel,
+  locale = "en",
+}: HeroProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const reduceMotion = useReducedMotion();
 
@@ -76,12 +96,75 @@ export function Hero({ title, subtitle, images, ctaLabel, locale = "en" }: HeroP
           transition={{ delay: 0.2, duration: reduceMotion ? 0 : 0.6 }}
           className="max-w-4xl px-4 text-center text-white"
         >
-          <h1 className="text-5xl font-bold leading-tight drop-shadow-md md:text-7xl mb-4">
+          <h1 className="text-5xl font-extrabold leading-tight drop-shadow-md md:text-7xl mb-4">
             {title}
           </h1>
-          <p className="mb-8 text-xl text-white/90 md:text-2xl">
+          <p className="mb-4 text-xl font-semibold text-white/95 md:text-2xl">
             {subtitle}
           </p>
+          {roomOptionsStructured?.lead || roomOptionsStructured?.configs?.length ? (
+            <div className="mb-8 flex flex-col items-center gap-4">
+              {roomOptionsStructured.lead && (
+                <motion.p
+                  initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35, duration: reduceMotion ? 0 : 0.5 }}
+                  className="text-base font-semibold text-white/95 md:text-lg"
+                >
+                  {roomOptionsStructured.lead}
+                </motion.p>
+              )}
+              {roomOptionsStructured.headline && (
+                <motion.p
+                  initial={reduceMotion ? false : { opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.45, duration: reduceMotion ? 0 : 0.4 }}
+                  className="font-serif text-sm font-bold uppercase tracking-[0.25em] text-amber-300 drop-shadow-sm md:text-base"
+                >
+                  {roomOptionsStructured.headline}
+                </motion.p>
+              )}
+              {roomOptionsStructured.configs && roomOptionsStructured.configs.length > 0 && (
+                <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                  {roomOptionsStructured.configs.map((config, i) => (
+                    <motion.div
+                      key={config}
+                      initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        delay: 0.55 + i * 0.1,
+                        duration: reduceMotion ? 0 : 0.45,
+                      }}
+                      whileHover={reduceMotion ? undefined : { scale: 1.05, y: -2 }}
+                      className="flex items-center gap-2 rounded-full border border-amber-400/50 bg-white/10 px-4 py-2.5 backdrop-blur-sm transition-shadow hover:shadow-lg hover:shadow-amber-500/20"
+                    >
+                      <Bed className="size-4 shrink-0 text-amber-300" aria-hidden />
+                      <span className="font-bold text-white">
+                        {config}
+                      </span>
+                      <Bath className="size-4 shrink-0 text-amber-300" aria-hidden />
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+              {roomOptionsStructured.suffix && (
+                <motion.p
+                  initial={reduceMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.85, duration: reduceMotion ? 0 : 0.4 }}
+                  className="text-sm font-medium text-white/85"
+                >
+                  {roomOptionsStructured.suffix}
+                </motion.p>
+              )}
+            </div>
+          ) : roomOptions ? (
+            <p className="mb-8 max-w-2xl text-base font-semibold text-white/90 md:text-lg">
+              {roomOptions}
+            </p>
+          ) : (
+            <div className="mb-8" />
+          )}
           <Button
             asChild
             size="lg"

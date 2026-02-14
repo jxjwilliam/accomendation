@@ -94,7 +94,15 @@ export interface UiStrings {
     viewMasonry: string;
     viewList: string;
   };
-  hero: { ctaLabel: string };
+  hero: {
+    ctaLabel: string;
+    roomOptions?: string;
+    /** Structured room options for enhanced hero display. */
+    roomOptionsLead?: string;
+    roomOptionsHeadline?: string;
+    roomConfigs?: string[];
+    roomOptionsSuffix?: string;
+  };
   /** Section headings and labels. */
   sections: {
     whyChooseUs: string;

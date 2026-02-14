@@ -40,6 +40,17 @@ export default async function HomePage({ params }: HomePageProps) {
       <Hero
         title={property.name}
         subtitle={property.heroSubtitle ?? property.typeOfAccommodation}
+        roomOptions={uiStrings.hero.roomOptions}
+        roomOptionsStructured={
+          uiStrings.hero.roomOptionsLead || uiStrings.hero.roomConfigs?.length
+            ? {
+                lead: uiStrings.hero.roomOptionsLead,
+                headline: uiStrings.hero.roomOptionsHeadline,
+                configs: uiStrings.hero.roomConfigs,
+                suffix: uiStrings.hero.roomOptionsSuffix,
+              }
+            : undefined
+        }
         images={heroImages}
         ctaLabel={uiStrings.hero.ctaLabel}
         locale={locale}
