@@ -6,8 +6,6 @@
 
 import type { Locale } from "@/lib/i18n";
 import type { BookingChannelsContent, PropertyContent, FooterContent, FooterLink, UiStrings } from "@/lib/types";
-import { AIRBNB_BOOKING_URL } from "@/lib/contact";
-
 const propertyByLocale: Record<Locale, () => Promise<{ default: PropertyContent }>> = {
   en: () => import("@/content/property.en.json").then((m) => m as { default: PropertyContent }),
   fr: () => import("@/content/property.fr.json").then((m) => m as { default: PropertyContent }),
@@ -95,6 +93,9 @@ const faqByLocale: Record<Locale, { title: string; items: { q: string; a: string
       { q: "What are check-in and check-out times?", a: "Check-in after 4 PM, check-out by 10 AM." },
       { q: "Is cancellation free?", a: "Free cancellation up to 24 hours before check-in." },
       { q: "Is there parking?", a: "Yes, free parking is available." },
+      { q: "Is WiFi available?", a: "Yes, high-speed WiFi is available throughout the property." },
+      { q: "Are pets allowed?", a: "Please contact us for our pet policy. Some restrictions may apply." },
+      { q: "Is smoking allowed?", a: "This is a non-smoking property. Smoking is not permitted indoors." },
     ],
   },
   fr: {
@@ -103,6 +104,9 @@ const faqByLocale: Record<Locale, { title: string; items: { q: string; a: string
       { q: "Heures d'arrivée et de départ?", a: "Arrivée après 15 h, départ avant 11 h." },
       { q: "Annulation gratuite?", a: "Annulation gratuite jusqu'à 24 h avant l'arrivée." },
       { q: "Y a-t-il un stationnement?", a: "Oui, stationnement gratuit disponible." },
+      { q: "Le WiFi est-il disponible?", a: "Oui, WiFi haut débit disponible dans toute la propriété." },
+      { q: "Les animaux sont-ils acceptés?", a: "Veuillez nous contacter pour notre politique concernant les animaux." },
+      { q: "Le tabac est-il autorisé?", a: "Propriété non-fumeurs. Fumer n'est pas permis à l'intérieur." },
     ],
   },
   "zh-Hans": {
@@ -111,6 +115,9 @@ const faqByLocale: Record<Locale, { title: string; items: { q: string; a: string
       { q: "入住和退房时间？", a: "下午4点后入住，上午10点前退房。" },
       { q: "可以免费取消吗？", a: "入住前24小时可免费取消。" },
       { q: "有停车位吗？", a: "有，提供免费停车。" },
+      { q: "有WiFi吗？", a: "有，全屋提供高速WiFi。" },
+      { q: "可以带宠物吗？", a: "请与我们联系了解宠物政策。" },
+      { q: "可以吸烟吗？", a: "本房源为无烟房，室内禁止吸烟。" },
     ],
   },
   "zh-Hant": {
@@ -119,6 +126,9 @@ const faqByLocale: Record<Locale, { title: string; items: { q: string; a: string
       { q: "入住和退房時間？", a: "下午4點後入住，上午10點前退房。" },
       { q: "可以免費取消嗎？", a: "入住前24小時可免費取消。" },
       { q: "有停車位嗎？", a: "有，提供免費停車。" },
+      { q: "有WiFi嗎？", a: "有，全屋提供高速WiFi。" },
+      { q: "可以帶寵物嗎？", a: "請與我們聯繫了解寵物政策。" },
+      { q: "可以吸煙嗎？", a: "本房源為無煙房，室內禁止吸煙。" },
     ],
   },
 };
@@ -132,7 +142,7 @@ export function getFaqContent(locale: Locale): { title: string; items: { q: stri
 
 /**
  * Get footer content derived from property (name, address), links, and modal content.
- * Policies open in modal; FAQ merged into House Rules section; Book links to #contact.
+ * Policies open in modal; FAQ merged into House Rules section; Book links to Airbnb.
  */
 export async function getFooterContent(locale: Locale): Promise<FooterContent> {
   const property = await getProperty(locale);
@@ -140,10 +150,7 @@ export async function getFooterContent(locale: Locale): Promise<FooterContent> {
   const addressLine =
     property.location.addressLine ??
     `${property.location.city}, ${property.location.region}, ${property.location.country}`;
-  const links: FooterLink[] = [
-    { label: labels.gallery, href: `/${locale}/gallery` },
-    { label: labels.book, href: AIRBNB_BOOKING_URL, external: true },
-  ];
+  const links: FooterLink[] = [];
   const faq = faqByLocale[locale] ?? faqByLocale.en;
   const modalLinks: FooterContent["modalLinks"] =
     faq.items?.length && property.policies

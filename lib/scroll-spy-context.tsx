@@ -29,4 +29,4 @@ export function useScrollSpy(): ScrollSpyContextValue {
 }
 
 /** Section ids to observe for scroll-spy (in scroll order). */
-export const SCROLL_SPY_SECTION_IDS = ["home", "property-details", "contact"] as const;
+export const SCROLL_SPY_SECTION_IDS = ["home", "property-details", "book-your-stay", "get-in-touch"] as const;

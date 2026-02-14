@@ -84,7 +84,7 @@ export interface UiStrings {
   brandName: string;
   /** Section heading for Property Details. */
   propertyDetailsTitle: string;
-  nav: { home: string; property: string; contact: string };
+  nav: { home: string; property: string; booking: string; contact: string; gallery: string };
   gallery: {
     title: string;
     subtitle: string;

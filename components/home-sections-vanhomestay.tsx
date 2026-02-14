@@ -28,7 +28,6 @@ import { GoogleMap } from "@/components/google-map";
 import { BookingCalendarCard } from "@/components/booking-calendar-card";
 import { AIRBNB_BOOKING_URL } from "@/lib/contact";
 import { ScrollSpyUpdater } from "@/components/scroll-spy-updater";
-import { WonderfulStaySurreyDialog } from "@/components/wonderful-stay-surrey-dialog";
 import { GetInTouchForm } from "@/components/get-in-touch-form";
 import { CONTACT } from "@/lib/contact";
 
@@ -420,11 +419,11 @@ export function HomeSectionsVanhomestay({
               {faqContent?.items?.length ? (
                 <div className="mt-8 pt-8 border-t border-border">
                   <h4 className="mb-4 text-lg font-semibold text-foreground">{faqContent.title}</h4>
-                  <dl className="space-y-3">
+                  <dl className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-x-8 md:gap-y-4">
                     {faqContent.items.map((item, i) => (
-                      <div key={i}>
+                      <div key={i} className="space-y-1">
                         <dt className="font-medium text-foreground">{item.q}</dt>
-                        <dd className="mt-1 text-sm text-muted-foreground">{item.a}</dd>
+                        <dd className="text-sm text-muted-foreground">{item.a}</dd>
                       </div>
                     ))}
                   </dl>
@@ -437,7 +436,7 @@ export function HomeSectionsVanhomestay({
 
       {/* Book Your Stay - CTA to Airbnb (icon inline with title, GSAP float) */}
       <section
-        id="contact"
+        id="book-your-stay"
         data-scroll-section
         className="w-full section-padding bg-white scroll-mt-20"
         aria-label="Book your stay"
@@ -566,20 +565,6 @@ export function HomeSectionsVanhomestay({
         </div>
       </section>
 
-      {/* Footer-style description block */}
-      <section data-scroll-section className="w-full section-padding bg-muted/30">
-        <div className="mx-auto w-full max-w-[75ch] px-4 md:px-6">
-          <p className="text-base leading-relaxed text-foreground">{property.description}</p>
-          <div className="mt-8 flex justify-center">
-            <WonderfulStaySurreyDialog
-              property={property}
-              channels={channels}
-              triggerLabel={`About ${property.name}`}
-              uiStrings={uiStrings}
-            />
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

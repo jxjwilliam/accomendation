@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -7,19 +8,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { localeLabels, localeIcons, type Locale } from "@/lib/i18n";
 import { locales } from "@/lib/i18n";
-import { Globe, Home, Building2, Mail, Phone } from "lucide-react";
+import { Globe, Menu, Phone, Mail, Home, Building2, CalendarCheck, Images } from "lucide-react";
 import { CONTACT } from "@/lib/contact";
 
 interface HeaderProps {
   currentLocale: Locale;
-  /** Localized brand name for logo (e.g. "Manna Family Hotel", "吗哪家庭旅馆"). */
   brandName: string;
-  navLabels: { home: string; property: string; contact: string };
-  /** Optional: which section id is in view for highlight (e.g. from scroll-spy). */
+  navLabels: { home: string; property: string; booking: string; contact: string; gallery: string };
   activeSection?: string | null;
 }
 
@@ -30,17 +36,47 @@ const NAV_ITEMS: {
 }[] = [
   { id: "home", getHref: (locale) => `/${locale}#home`, icon: Home },
   { id: "property-details", getHref: (locale) => `/${locale}#property-details`, icon: Building2 },
-  { id: "contact", getHref: (locale) => `/${locale}#contact`, icon: Mail },
+  { id: "book-your-stay", getHref: (locale) => `/${locale}#book-your-stay`, icon: CalendarCheck },
+  { id: "get-in-touch", getHref: (locale) => `/${locale}#get-in-touch`, icon: Mail },
+  { id: "gallery", getHref: (locale) => `/${locale}/gallery`, icon: Images },
 ];
 
+/**
+ * Header component matching Van Homestay layout:
+ * Logo (left) | Nav links center | Language + Theme (right)
+ * Mobile: Hamburger opens Sheet with nav links.
+ */
 export function Header({ currentLocale, brandName, navLabels, activeSection }: HeaderProps) {
-  const labels = [navLabels.home, navLabels.property, navLabels.contact];
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const labels = [navLabels.home, navLabels.property, navLabels.booking, navLabels.contact, navLabels.gallery];
+
+  const navLinks = (
+    <>
+      {NAV_ITEMS.map((item, i) => (
+        <Link
+          key={item.id}
+          href={item.getHref(currentLocale)}
+          onClick={() => setMobileOpen(false)}
+          className={`shrink-0 text-sm font-medium transition-colors hover:text-primary ${
+            activeSection === item.id ? "text-primary" : "text-foreground"
+          }`}
+        >
+          {labels[i]}
+        </Link>
+      ))}
+    </>
+  );
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md dark:bg-background/80">
-      <div className="container flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
+    <nav
+      className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md dark:bg-background/80"
+      aria-label="Main navigation"
+    >
+      <div className="mx-auto flex h-16 w-full max-w-full items-center justify-between px-4 sm:px-6">
+        {/* Left: Logo - more ml to pull toward center */}
         <Link
           href={`/${currentLocale}`}
-          className="flex shrink-0 items-center gap-2 font-semibold text-foreground hover:text-primary"
+          className="ml-48 flex shrink-0 items-center gap-2 font-bold text-foreground hover:text-primary sm:ml-64"
         >
           <img
             src="/2.png"
@@ -49,15 +85,19 @@ export function Header({ currentLocale, brandName, navLabels, activeSection }: H
             width={120}
             height={48}
           />
-          <span className="hidden text-base sm:inline">{brandName}</span>
+          <span className="hidden text-xl sm:inline">{brandName}</span>
         </Link>
-        <nav
-          className="flex flex-1 items-center justify-end gap-1 sm:gap-2"
-          aria-label="Main"
-        >
+
+        {/* Center: Nav links - text only, gap-8 (Van Homestay style) */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks}
+        </div>
+
+        {/* Right: Phone + Email + Theme + Language + Hamburger - more mr to pull toward center */}
+        <div className="mr-48 flex shrink-0 items-center gap-4 sm:mr-64">
           <a
             href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-md px-2 py-2 text-sm text-muted-foreground hover:text-primary focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring md:gap-2 md:justify-start"
+            className="hidden items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors sm:flex"
             aria-label={`Phone: ${CONTACT.phone}`}
           >
             <Phone className="size-4 shrink-0" aria-hidden />
@@ -65,34 +105,19 @@ export function Header({ currentLocale, brandName, navLabels, activeSection }: H
           </a>
           <a
             href={`mailto:${CONTACT.email}`}
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-md px-2 py-2 text-sm text-muted-foreground hover:text-primary focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring md:gap-2 md:justify-start"
+            className="hidden items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors sm:flex"
             aria-label={`Email: ${CONTACT.email}`}
           >
             <Mail className="size-4 shrink-0" aria-hidden />
             <span className="hidden lg:inline">{CONTACT.email}</span>
           </a>
-          {NAV_ITEMS.map((item, i) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.id}
-                href={item.getHref(currentLocale)}
-                className={`min-h-[44px] min-w-[44px] rounded-md px-3 py-2 text-sm font-medium underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring inline-flex items-center gap-2 ${
-                  activeSection === item.id ? "text-primary font-semibold" : "text-foreground"
-                }`}
-              >
-                <Icon className="size-4 shrink-0" aria-hidden />
-                {labels[i]}
-              </Link>
-            );
-          })}
           <ThemeSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
-                className="h-11 min-h-[44px] w-11 min-w-[44px] shrink-0"
+                className="h-8 w-8 shrink-0"
                 aria-label="Select language"
                 aria-haspopup="listbox"
               >
@@ -107,10 +132,7 @@ export function Header({ currentLocale, brandName, navLabels, activeSection }: H
                     className="flex cursor-pointer items-center gap-2"
                     aria-selected={currentLocale === locale}
                   >
-                    <span
-                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-muted text-xs font-semibold"
-                      aria-hidden
-                    >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-muted text-xs font-semibold">
                       {localeIcons[locale]}
                     </span>
                     {localeLabels[locale]}
@@ -119,8 +141,63 @@ export function Header({ currentLocale, brandName, navLabels, activeSection }: H
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-        </nav>
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden h-8 w-8 shrink-0"
+                aria-label="Open menu"
+              >
+                <Menu className="size-6" aria-hidden />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[280px] sm:w-[320px]">
+              <SheetHeader className="px-6">
+                <SheetTitle className="text-left">{brandName}</SheetTitle>
+              </SheetHeader>
+              <div className="flex flex-col gap-4 px-6 pb-6 pt-2">
+                <div className="flex flex-col gap-3 border-b border-border pb-4">
+                  <a
+                    href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
+                    className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary"
+                    aria-label={`Phone: ${CONTACT.phone}`}
+                  >
+                    <Phone className="size-5 shrink-0" aria-hidden />
+                    {CONTACT.phone}
+                  </a>
+                  <a
+                    href={`mailto:${CONTACT.email}`}
+                    className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary break-all"
+                    aria-label={`Email: ${CONTACT.email}`}
+                  >
+                    <Mail className="size-5 shrink-0" aria-hidden />
+                    {CONTACT.email}
+                  </a>
+                </div>
+                <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
+                  {NAV_ITEMS.map((item, i) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.id}
+                        href={item.getHref(currentLocale)}
+                        onClick={() => setMobileOpen(false)}
+                        className={`flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors hover:bg-muted/50 hover:text-primary ${
+                          activeSection === item.id ? "text-primary" : "text-foreground"
+                        }`}
+                      >
+                        <Icon className="size-5 shrink-0" aria-hidden />
+                        {labels[i]}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
-    </header>
+    </nav>
   );
 }

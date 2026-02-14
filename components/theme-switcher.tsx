@@ -20,7 +20,7 @@ export function ThemeSwitcher() {
         <Button
           variant="outline"
           size="icon"
-          className="h-9 w-9 min-h-[44px] min-w-[44px]"
+          className="h-9 w-9 min-h-[44px] min-w-[44px] shrink-0"
           aria-label="Choose theme"
           aria-haspopup="listbox"
         >

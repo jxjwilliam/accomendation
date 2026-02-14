@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { Images, CalendarCheck, FileText, ExternalLink } from "lucide-react";
+import { FileText, ExternalLink, Phone, Mail } from "lucide-react";
+import { CONTACT } from "@/lib/contact";
 import {
   Dialog,
   DialogContent,
@@ -14,13 +14,6 @@ import { X } from "lucide-react";
 import type { FooterContent } from "@/lib/types";
 import type { UiStrings } from "@/lib/types";
 import { QrCodeBadge } from "@/components/qr-code-badge";
-
-/** Icon for a footer nav link by href. */
-function getLinkIcon(href: string) {
-  if (href.includes("gallery")) return Images;
-  if (href.includes("contact") || href === "#contact") return CalendarCheck;
-  return CalendarCheck;
-}
 
 /** Icon for a footer modal link by modalId. */
 function getModalLinkIcon(_modalId: "policies" | "faq") {
@@ -40,7 +33,7 @@ const DEFAULT_SITE_URL = "https://manna-family-hotel.vercel.app/";
 
 export function FooterClient({ content, siteUrl = DEFAULT_SITE_URL, uiStrings }: FooterClientProps) {
   const [policiesOpen, setPoliciesOpen] = useState(false);
-  const { businessName, addressLine, links, modalLinks, policiesContent } = content;
+  const { businessName, addressLine, modalLinks, policiesContent } = content;
 
   return (
     <>
@@ -49,94 +42,114 @@ export function FooterClient({ content, siteUrl = DEFAULT_SITE_URL, uiStrings }:
         role="contentinfo"
         aria-label="Site footer"
       >
-        <div className="container mx-auto max-w-6xl px-4 md:px-6">
-          <div className="flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
-            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-              <div>
-                <p className="font-semibold text-white">{businessName}</p>
-                <p className="mt-1 text-sm text-white/80">{addressLine}</p>
+        <div className="container mx-auto max-w-6xl px-4 md:px-6 space-y-8">
+          {/* Row 1: Business info | QR code + Airbnb + Booking.com + VRBO */}
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="font-semibold text-white">{businessName}</p>
+              <p className="mt-1 text-sm text-white/80">{addressLine}</p>
+              <div className="mt-2 flex flex-col gap-1 text-sm text-white/80">
+                <a
+                  href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
+                  className="inline-flex items-center gap-2 hover:text-white focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring rounded"
+                  aria-label={`Phone: ${CONTACT.phone}`}
+                >
+                  <Phone className="h-4 w-4 shrink-0" aria-hidden />
+                  {CONTACT.phone}
+                </a>
+                <a
+                  href={`mailto:${CONTACT.email}`}
+                  className="inline-flex items-center gap-2 hover:text-white focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring rounded"
+                  aria-label={`Email: ${CONTACT.email}`}
+                >
+                  <Mail className="h-4 w-4 shrink-0" aria-hidden />
+                  {CONTACT.email}
+                </a>
               </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6">
               <QrCodeBadge
-                value={siteUrl || DEFAULT_SITE_URL}
-                size={80}
+                value={DEFAULT_SITE_URL}
+                size={96}
                 title="Scan to visit Manna Family Hotel"
                 className="shrink-0 border-white/30 bg-white"
               />
+              {(process.env.NEXT_PUBLIC_AIRBNB_BOOKING_URL ||
+                process.env.NEXT_PUBLIC_BOOKING_COM_BOOKING_URL ||
+                process.env.NEXT_PUBLIC_VRBO_BOOKING_URL) && (
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                  {process.env.NEXT_PUBLIC_AIRBNB_BOOKING_URL && (
+                    <a
+                      href={process.env.NEXT_PUBLIC_AIRBNB_BOOKING_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex min-h-11 min-w-11 items-center gap-2 rounded-md px-3 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                      aria-label={`${uiStrings.footer.airbnb} - ${uiStrings.sections.bookYourStay}`}
+                    >
+                      <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+                      {uiStrings.footer.airbnb}
+                    </a>
+                  )}
+                  {process.env.NEXT_PUBLIC_BOOKING_COM_BOOKING_URL && (
+                    <a
+                      href={process.env.NEXT_PUBLIC_BOOKING_COM_BOOKING_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex min-h-11 min-w-11 items-center gap-2 rounded-md px-3 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                      aria-label={`${uiStrings.footer.bookingCom} - ${uiStrings.sections.bookYourStay}`}
+                    >
+                      <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+                      {uiStrings.footer.bookingCom}
+                    </a>
+                  )}
+                  {process.env.NEXT_PUBLIC_VRBO_BOOKING_URL && (
+                    <a
+                      href={process.env.NEXT_PUBLIC_VRBO_BOOKING_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex min-h-11 min-w-11 items-center gap-2 rounded-md px-3 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                      aria-label={`${uiStrings.footer.vrbo} - ${uiStrings.sections.bookYourStay}`}
+                    >
+                      <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+                      {uiStrings.footer.vrbo}
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
-            <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-4 sm:gap-6">
-              {links.map(({ label, href, external }) => {
-                const Icon = getLinkIcon(href);
-                return (
-                  <Link
-                    key={href + label}
-                    href={href}
-                    className="flex min-h-11 min-w-11 cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-                    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  >
-                    <Icon className="h-4 w-4 shrink-0" aria-hidden />
-                    {label}
-                  </Link>
-                );
-              })}
-              {modalLinks?.map(({ label, modalId }) => {
-                const Icon = getModalLinkIcon(modalId);
-                return modalId === "policies" ? (
-                  <button
-                    key={modalId}
-                    type="button"
-                    onClick={() => setPoliciesOpen(true)}
-                    className="flex min-h-11 min-w-11 cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <Icon className="h-4 w-4 shrink-0" aria-hidden />
-                    {label}
-                  </button>
-                ) : null;
-              })}
-            </nav>
+            {modalLinks && modalLinks.length > 0 && (
+              <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-4">
+                {modalLinks.map(({ label, modalId }) => {
+                  const Icon = getModalLinkIcon(modalId);
+                  return modalId === "policies" ? (
+                    <button
+                      key={modalId}
+                      type="button"
+                      onClick={() => setPoliciesOpen(true)}
+                      className="flex min-h-11 min-w-11 cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                      {label}
+                    </button>
+                  ) : null;
+                })}
+              </nav>
+            )}
           </div>
-          {/* Booking platform links from .env */}
-          {(process.env.NEXT_PUBLIC_AIRBNB_BOOKING_URL ||
-            process.env.NEXT_PUBLIC_BOOKING_COM_BOOKING_URL ||
-            process.env.NEXT_PUBLIC_VRBO_BOOKING_URL) && (
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 border-t border-white/20 pt-6">
-              {process.env.NEXT_PUBLIC_AIRBNB_BOOKING_URL && (
-                <a
-                  href={process.env.NEXT_PUBLIC_AIRBNB_BOOKING_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-11 min-w-11 items-center gap-2 rounded-md px-3 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-                  aria-label={`${uiStrings.footer.airbnb} - ${uiStrings.sections.bookYourStay}`}
-                >
-                  <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
-                  {uiStrings.footer.airbnb}
-                </a>
-              )}
-              {process.env.NEXT_PUBLIC_BOOKING_COM_BOOKING_URL && (
-                <a
-                  href={process.env.NEXT_PUBLIC_BOOKING_COM_BOOKING_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-11 min-w-11 items-center gap-2 rounded-md px-3 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-                  aria-label={`${uiStrings.footer.bookingCom} - ${uiStrings.sections.bookYourStay}`}
-                >
-                  <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
-                  {uiStrings.footer.bookingCom}
-                </a>
-              )}
-              {process.env.NEXT_PUBLIC_VRBO_BOOKING_URL && (
-                <a
-                  href={process.env.NEXT_PUBLIC_VRBO_BOOKING_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-11 min-w-11 items-center gap-2 rounded-md px-3 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-                  aria-label={`${uiStrings.footer.vrbo} - ${uiStrings.sections.bookYourStay}`}
-                >
-                  <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
-                  {uiStrings.footer.vrbo}
-                </a>
-              )}
-            </div>
-          )}
+          {/* Row 2: Copyright + bestitconsulting.ca */}
+          <div className="flex flex-col gap-2 border-t border-white/20 pt-6 text-center sm:flex-row sm:items-center sm:justify-center sm:gap-4">
+            <p className="text-sm text-white/70">
+              © {new Date().getFullYear()} {businessName}
+            </p>
+            <a
+              href="https://bestitconsulting.ca"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-white/70 underline-offset-4 hover:text-white focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              bestitconsulting.ca
+            </a>
+          </div>
         </div>
       </footer>
 

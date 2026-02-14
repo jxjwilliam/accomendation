@@ -5,8 +5,6 @@ import { motion } from "motion/react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AIRBNB_BOOKING_URL } from "@/lib/contact";
-
 export interface HeroProps {
   /** Main headline (e.g. property name). */
   title: string;
@@ -89,7 +87,7 @@ export function Hero({ title, subtitle, images, ctaLabel, locale = "en" }: HeroP
             size="lg"
             className="min-h-14 rounded-md bg-primary px-8 py-6 text-lg font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <a href={AIRBNB_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+            <a href={`/${locale}#book-your-stay`}>
               {ctaLabel}
             </a>
           </Button>
