@@ -120,6 +120,10 @@ export interface UiStrings {
     yourMessage: string;
     messageSent: string;
     messageSentHint: string;
+    /** Shown when form submission fails. */
+    formError: string;
+    /** Shown on submit button while sending. */
+    sending: string;
   };
   /** Booking calendar strings. */
   booking: {
@@ -128,6 +132,12 @@ export interface UiStrings {
     clearDates: string;
     bookViaOtas: string;
     reserved: string;
+  };
+  /** Footer booking platform link labels. */
+  footer: {
+    airbnb: string;
+    bookingCom: string;
+    vrbo: string;
   };
   /** Modal titles and labels. */
   modals: {

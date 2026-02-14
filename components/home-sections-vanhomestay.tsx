@@ -164,7 +164,7 @@ export function HomeSectionsVanhomestay({
     );
     convergeSections.forEach((section) => {
       const content = section.querySelector<HTMLElement>("[class*='max-w-6xl']");
-      const header = content?.querySelector<HTMLElement>("> div:first-child");
+      const header = content?.firstElementChild as HTMLElement | null;
       if (header) {
         gsap.fromTo(
           header,

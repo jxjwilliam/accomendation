@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Images, CalendarCheck, FileText } from "lucide-react";
+import { Images, CalendarCheck, FileText, ExternalLink } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -57,7 +57,7 @@ export function FooterClient({ content, siteUrl = DEFAULT_SITE_URL, uiStrings }:
                 <p className="mt-1 text-sm text-white/80">{addressLine}</p>
               </div>
               <QrCodeBadge
-                value={siteUrl}
+                value={siteUrl || DEFAULT_SITE_URL}
                 size={80}
                 title="Scan to visit Manna Family Hotel"
                 className="shrink-0 border-white/30 bg-white"
@@ -94,6 +94,49 @@ export function FooterClient({ content, siteUrl = DEFAULT_SITE_URL, uiStrings }:
               })}
             </nav>
           </div>
+          {/* Booking platform links from .env */}
+          {(process.env.NEXT_PUBLIC_AIRBNB_BOOKING_URL ||
+            process.env.NEXT_PUBLIC_BOOKING_COM_BOOKING_URL ||
+            process.env.NEXT_PUBLIC_VRBO_BOOKING_URL) && (
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 border-t border-white/20 pt-6">
+              {process.env.NEXT_PUBLIC_AIRBNB_BOOKING_URL && (
+                <a
+                  href={process.env.NEXT_PUBLIC_AIRBNB_BOOKING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-11 min-w-11 items-center gap-2 rounded-md px-3 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label={`${uiStrings.footer.airbnb} - ${uiStrings.sections.bookYourStay}`}
+                >
+                  <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+                  {uiStrings.footer.airbnb}
+                </a>
+              )}
+              {process.env.NEXT_PUBLIC_BOOKING_COM_BOOKING_URL && (
+                <a
+                  href={process.env.NEXT_PUBLIC_BOOKING_COM_BOOKING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-11 min-w-11 items-center gap-2 rounded-md px-3 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label={`${uiStrings.footer.bookingCom} - ${uiStrings.sections.bookYourStay}`}
+                >
+                  <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+                  {uiStrings.footer.bookingCom}
+                </a>
+              )}
+              {process.env.NEXT_PUBLIC_VRBO_BOOKING_URL && (
+                <a
+                  href={process.env.NEXT_PUBLIC_VRBO_BOOKING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-11 min-w-11 items-center gap-2 rounded-md px-3 py-2 text-sm text-white/90 underline-offset-4 hover:text-primary hover:underline focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label={`${uiStrings.footer.vrbo} - ${uiStrings.sections.bookYourStay}`}
+                >
+                  <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+                  {uiStrings.footer.vrbo}
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </footer>
 
