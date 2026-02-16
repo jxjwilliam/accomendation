@@ -61,31 +61,35 @@ export function BookingCalendarCard({ uiStrings }: BookingCalendarCardProps) {
         initial={reducedMotion ? false : { opacity: 0, y: 20 }}
         animate={reducedMotion ? false : { opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="rounded-xl border border-white/60 bg-white/80 p-4 shadow-lg backdrop-blur-md sm:p-6"
+        className="overflow-hidden rounded-2xl border border-border bg-white shadow-md ring-1 ring-black/5"
       >
-        <h2 className="text-lg font-semibold leading-tight text-foreground">
-          {uiStrings.booking.checkAvailability}
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {uiStrings.booking.selectDates}
-        </p>
-        <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
-          <Calendar
-            mode="range"
-            selected={range}
-            onSelect={setRange}
-            disabled={isDateDisabled}
-            components={{ DayButton: DayButtonWithReservedTooltip }}
-            className="rounded-lg border-0 bg-transparent p-0"
-          />
-          <div className="flex flex-col gap-2 sm:mt-0">
+        <div className="border-b border-border bg-muted/30 px-6 py-4">
+          <h2 className="text-lg font-semibold leading-tight text-foreground">
+            {uiStrings.booking.checkAvailability}
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {uiStrings.booking.selectDates}
+          </p>
+        </div>
+        <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-start sm:p-8">
+          <div className="flex-1 rounded-lg bg-muted/20 p-2">
+            <Calendar
+              mode="range"
+              selected={range}
+              onSelect={setRange}
+              disabled={isDateDisabled}
+              components={{ DayButton: DayButtonWithReservedTooltip }}
+              className="rounded-lg border-0 bg-transparent p-0"
+            />
+          </div>
+          <div className="flex shrink-0 flex-col gap-3 sm:w-40">
             <Button
               className="min-h-11 cursor-pointer"
               onClick={() => setRange(undefined)}
             >
               {uiStrings.booking.clearDates}
             </Button>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs leading-relaxed text-muted-foreground">
               {uiStrings.booking.bookViaOtas}
             </p>
           </div>

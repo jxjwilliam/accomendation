@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -281,6 +281,13 @@
     .section-title {
       font-size: 2.25rem;
     }
+  }
+  /* Book Your Stay: housing-friendly font (EN) */
+  .book-your-stay-section {
+    font-family: 'Lora', Georgia, serif;
+  }
+  .book-your-stay-section .section-title {
+    font-family: 'Lora', Georgia, serif;
   }
   .section-title-underline {
     width: 5rem;

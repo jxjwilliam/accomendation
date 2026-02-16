@@ -13,6 +13,8 @@ Auto-generated from all feature plans. Last updated: 2026-02-07
 - N/A (file-based content in `content/*.json` per locale) (005-ui-ux-improvements)
 - TypeScript 5.6, React 19, Next.js 15 + next-intl, GSAP (ScrollTrigger), Motion (Framer Motion), lucide-react, Radix UI, Tailwind CSS v4 (006-responsive-mobile-popup)
 - N/A (static content, content/ JSON) (006-responsive-mobile-popup)
+- TypeScript 5.6 + Next.js 15, React 19, Tailwind CSS v4, Shadcn UI (007-add-ical)
+- JSON files in `content/channels/` (airbnb.json, vrbo.json, booking.json) (007-add-ical)
 
 - TypeScript 5.x (latest stable) + Next.js 15 (App Router), React 19, Tailwind CSS v4, shadcn/ui, next-intl (or similar for i18n) (001-family-hotel-ota-app)
 
@@ -35,9 +37,9 @@ npm test && npm run lint
 TypeScript 5.x (latest stable): Follow standard conventions
 
 ## Recent Changes
+- 007-add-ical: Added TypeScript 5.6 + Next.js 15, React 19, Tailwind CSS v4, Shadcn UI
 - 006-responsive-mobile-popup: Added TypeScript 5.6, React 19, Next.js 15 + next-intl, GSAP (ScrollTrigger), Motion (Framer Motion), lucide-react, Radix UI, Tailwind CSS v4
 - 005-ui-ux-improvements: Added TypeScript 5.6, React 19 + Next.js 15 (App Router), Tailwind CSS v4, shadcn/ui, Motion (Framer Motion), GSAP
-- 004-animation-scroll-effects: Added TypeScript 5.6+, React 19 + Next.js 15 (App Router), GSAP 3.14+ (with ScrollTrigger), Motion 12+ (Framer Motion), Tailwind CSS v4, existing shadcn/ui and app components
 
 
 <!-- MANUAL ADDITIONS START -->

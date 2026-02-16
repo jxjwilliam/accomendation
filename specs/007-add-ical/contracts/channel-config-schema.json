@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Airbnb Channel Config",
+  "description": "Schema for content/channels/airbnb.json",
+  "type": "object",
+  "additionalProperties": {
+    "oneOf": [
+      {
+        "type": "object",
+        "required": ["ical", "room"],
+        "properties": {
+          "ical": { "type": "string", "format": "uri" },
+          "room": { "type": "string" },
+          "label": { "type": "string" }
+        }
+      },
+      {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["ical", "room"],
+          "properties": {
+            "ical": { "type": "string", "format": "uri" },
+            "room": { "type": "string" },
+            "label": { "type": "string" }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -19,14 +19,18 @@ import {
   Waves,
   Phone,
   Mail,
+  Home,
+  HelpCircle,
+  FileText,
 } from "lucide-react";
+import type { BookingOption } from "@/lib/channels";
 import type { Property } from "@/lib/types";
 import type { BookingChannel } from "@/lib/types";
 import type { UiStrings } from "@/lib/types";
 import { BookingLinks } from "@/components/booking-links";
+import { BookingOptions } from "@/components/booking-options";
 import { GoogleMap } from "@/components/google-map";
 import { BookingCalendarCard } from "@/components/booking-calendar-card";
-import { AIRBNB_BOOKING_URL } from "@/lib/contact";
 import { ScrollSpyUpdater } from "@/components/scroll-spy-updater";
 import { GetInTouchForm } from "@/components/get-in-touch-form";
 import { CONTACT } from "@/lib/contact";
@@ -93,6 +97,7 @@ interface HomeSectionsVanhomestayProps {
   mapAddress: string;
   locationText: string;
   faqContent?: FaqContent;
+  bookingOptions?: BookingOption[];
 }
 
 /**
@@ -107,6 +112,7 @@ export function HomeSectionsVanhomestay({
   mapAddress,
   locationText,
   faqContent,
+  bookingOptions = [],
 }: HomeSectionsVanhomestayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const bookIconRef = useRef<HTMLDivElement>(null);
@@ -231,8 +237,13 @@ export function HomeSectionsVanhomestay({
         >
           <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
             <div className="mb-12 text-center">
-              <h2 className="section-title text-primary">{uiStrings.sections.whyChooseUs}</h2>
-              <div className="section-title-underline mt-2" aria-hidden />
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <div className="flex size-28 shrink-0 items-center justify-center text-primary">
+                  <Sparkles className="size-14" />
+                </div>
+                <h2 className="section-title text-primary">{uiStrings.sections.whyChooseUs}</h2>
+                <div className="section-title-underline mt-2 w-full basis-full" aria-hidden />
+              </div>
             </div>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
               {whyItems.slice(0, 4).map((item, i) => {
@@ -264,8 +275,13 @@ export function HomeSectionsVanhomestay({
       >
         <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
           <div className="mb-12 text-center">
-            <h2 className="section-title text-primary">{uiStrings.sections.amenities}</h2>
-            <div className="section-title-underline mt-2" aria-hidden />
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <div className="flex size-28 shrink-0 items-center justify-center text-primary">
+                <Home className="size-14" />
+              </div>
+              <h2 className="section-title text-primary">{uiStrings.sections.amenities}</h2>
+              <div className="section-title-underline mt-2 w-full basis-full" aria-hidden />
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {property.amenities.map((name, i) => {
@@ -294,8 +310,13 @@ export function HomeSectionsVanhomestay({
       >
         <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
           <div className="mb-12 text-center">
-            <h2 className="section-title text-primary">{uiStrings.propertyDetailsTitle}</h2>
-            <div className="section-title-underline mt-2" aria-hidden />
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <div className="flex size-28 shrink-0 items-center justify-center text-primary">
+                <FileText className="size-14" />
+              </div>
+              <h2 className="section-title text-primary">{uiStrings.propertyDetailsTitle}</h2>
+              <div className="section-title-underline mt-2 w-full basis-full" aria-hidden />
+            </div>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
               {property.description}
             </p>
@@ -329,17 +350,20 @@ export function HomeSectionsVanhomestay({
           {/* House Rules panel - structured rules + FAQ (vanhomestay reference) */}
           {(property.houseRulesItems?.length || property.houseRules || property.policies || faqContent?.items?.length) && (
             <div className="rounded-2xl border border-border bg-linear-to-br from-orange-50/70 to-white p-8">
-              <div className="mb-6 flex flex-wrap items-center gap-4">
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border bg-muted">
-                  <Image
-                    src={SECTION_ICON_HOUSE_RULES}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="56px"
-                  />
+              <div className="mb-6 text-center">
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <div className="relative size-28 shrink-0 overflow-hidden rounded-xl p-0 m-0">
+                    <Image
+                      src={SECTION_ICON_HOUSE_RULES}
+                      alt=""
+                      fill
+                      className="object-cover object-center"
+                      sizes="112px"
+                    />
+                  </div>
+                  <h3 className="section-title text-primary">{uiStrings.sections.houseRules}</h3>
+                  <div className="section-title-underline mt-2 w-full basis-full" aria-hidden />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground">{uiStrings.sections.houseRules}</h3>
               </div>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 {property.houseRulesItems?.length
@@ -418,7 +442,15 @@ export function HomeSectionsVanhomestay({
 
               {faqContent?.items?.length ? (
                 <div className="mt-8 pt-8 border-t border-border">
-                  <h4 className="mb-4 text-lg font-semibold text-foreground">{faqContent.title}</h4>
+                  <div className="mb-6 text-center">
+                    <div className="flex flex-wrap items-center justify-center gap-3">
+                      <div className="flex size-28 shrink-0 items-center justify-center text-primary">
+                        <HelpCircle className="size-14" />
+                      </div>
+                      <h4 className="section-title text-primary">{faqContent.title}</h4>
+                      <div className="section-title-underline mt-2 w-full basis-full" aria-hidden />
+                    </div>
+                  </div>
                   <dl className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-x-8 md:gap-y-4">
                     {faqContent.items.map((item, i) => (
                       <div key={i} className="space-y-1">
@@ -438,22 +470,22 @@ export function HomeSectionsVanhomestay({
       <section
         id="book-your-stay"
         data-scroll-section
-        className="w-full section-padding bg-white scroll-mt-20"
+        className={`w-full section-padding bg-white scroll-mt-20 ${locale === "en" ? "book-your-stay-section" : ""}`}
         aria-label="Book your stay"
       >
         <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
           <div className="mb-12 text-center">
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-3">
               <div
                 ref={bookIconRef}
-                className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border bg-muted"
+                className="relative size-28 shrink-0 overflow-hidden rounded-xl p-0 m-0"
               >
                 <Image
                   src={SECTION_ICON_BOOK}
                   alt=""
                   fill
-                  className="object-cover"
-                  sizes="56px"
+                  className="object-cover object-center"
+                  sizes="112px"
                 />
               </div>
               <h2 className="section-title text-primary">{uiStrings.sections.bookYourStay}</h2>
@@ -463,15 +495,8 @@ export function HomeSectionsVanhomestay({
               {uiStrings.sections.bookYourStaySubtitle}
             </p>
           </div>
-          <div className="mx-auto max-w-2xl text-center">
-            <a
-              href={AIRBNB_BOOKING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-14 items-center justify-center rounded-md bg-primary px-8 py-6 text-lg font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              {uiStrings.hero.ctaLabel}
-            </a>
+          <div className="mx-auto max-w-4xl">
+            <BookingOptions options={bookingOptions} uiStrings={uiStrings} />
           </div>
         </div>
       </section>
@@ -486,21 +511,23 @@ export function HomeSectionsVanhomestay({
         aria-label={uiStrings.sections.getInTouch}
       >
         <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
-          <div className="mb-10 flex flex-wrap items-center gap-4">
-            <div
-              ref={getInTouchIconRef}
-              className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border bg-muted"
-            >
-              <Image
-                src={SECTION_ICON_GET_IN_TOUCH}
-                alt=""
-                fill
-                className="object-cover"
-                sizes="56px"
-              />
+          <div className="mb-10 text-center">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <div
+                ref={getInTouchIconRef}
+                className="relative size-28 shrink-0 overflow-hidden rounded-xl p-0 m-0"
+              >
+                <Image
+                  src={SECTION_ICON_GET_IN_TOUCH}
+                  alt=""
+                  fill
+                  className="object-cover object-center"
+                  sizes="112px"
+                />
+              </div>
+              <h2 className="section-title text-primary">{uiStrings.sections.getInTouch}</h2>
+              <div className="section-title-underline mt-2 w-full basis-full" aria-hidden />
             </div>
-            <h2 className="section-title text-primary">{uiStrings.sections.getInTouch}</h2>
-            <div className="section-title-underline mt-2 w-full basis-full" aria-hidden />
           </div>
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">

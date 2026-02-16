@@ -1,0 +1,27 @@
+{
+  "3/2": {
+    "ical": "https://www.airbnb.ca/calendar/ical/774790483742448888.ics?t=fd620f4b2a1a4d4d83a566fce2d70d91",
+    "room": "774790483742448888"
+  },
+  "2/1": {
+    "ical": "https://www.airbnb.ca/calendar/ical/774835716209664374.ics?t=e943fe282de849ddbb976cea8c97cb42",
+    "room": "774835716209664374"
+  },
+  "1/1": [
+    {
+      "ical": "https://www.airbnb.ca/calendar/ical/1153941473363493917.ics?t=caeb6b911d4b406aa034b6d7db4f66ae",
+      "room": "1153941473363493917",
+      "label": "Unit A"
+    },
+    {
+      "ical": "https://www.airbnb.ca/calendar/ical/1524302301585503645.ics?t=7965e69e1cf84f8ab945916c36ae6cde",
+      "room": "1524302301585503645",
+      "label": "Unit B"
+    },
+    {
+      "ical": "https://www.airbnb.ca/calendar/ical/1153927871054590487.ics?t=fae1d29334a540b5810905c7a9f08a9f",
+      "room": "1153927871054590487",
+      "label": "With in-suite bathroom"
+    }
+  ]
+}

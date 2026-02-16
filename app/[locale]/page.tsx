@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { Locale } from "@/lib/i18n";
 import { getProperty, getBookingChannels, getUiStrings, getFaqContent } from "@/lib/content";
+import { getBookingOptions } from "@/lib/channels";
 import { getDefaultTitle, getDefaultDescription, getBaseUrl } from "@/lib/seo";
 import { HERO_IMAGE_PATHS } from "@/lib/gallery-images";
 import { Hero } from "@/components/hero";
@@ -31,6 +32,7 @@ export default async function HomePage({ params }: HomePageProps) {
     getUiStrings(locale),
     Promise.resolve(getFaqContent(locale)),
   ]);
+  const bookingOptions = await getBookingOptions(uiStrings);
   const locationText = `${property.location.city}, ${property.location.region}, ${property.location.country}`;
   const mapAddress = property.location.addressLine ?? locationText;
   const heroImages = HERO_IMAGE_PATHS;
@@ -55,7 +57,7 @@ export default async function HomePage({ params }: HomePageProps) {
         ctaLabel={uiStrings.hero.ctaLabel}
         locale={locale}
       />
-      <div className="w-full py-6 sm:py-8">
+      <div className="w-full">
         <HomeSectionsVanhomestay
           locale={locale}
           property={property}
@@ -64,6 +66,7 @@ export default async function HomePage({ params }: HomePageProps) {
           mapAddress={mapAddress}
           locationText={locationText}
           faqContent={faqContent}
+          bookingOptions={bookingOptions}
         />
       </div>
     </>

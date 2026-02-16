@@ -101,6 +101,10 @@ export interface UiStrings {
     roomOptionsLead?: string;
     roomOptionsHeadline?: string;
     roomConfigs?: string[];
+    /** Full text for room configs (e.g. "3 Bedrooms / 2 Bathrooms"). */
+    roomConfigsFull?: string[];
+    /** Override for 1BR/1BA option with in-suite bathroom (e.g. "1 Bedroom / 1 in-suite bathroom"). */
+    roomConfig1InSuite?: string;
     roomOptionsSuffix?: string;
   };
   /** Section headings and labels. */
@@ -140,6 +144,7 @@ export interface UiStrings {
     clearDates: string;
     bookViaOtas: string;
     reserved: string;
+    subscribeToCalendar?: string;
   };
   /** Footer booking platform link labels. */
   footer: {
